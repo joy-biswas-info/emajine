@@ -1,8 +1,3 @@
-RewriteEngine on
-RewriteCond %{HTTP_HOST} ^emajine.co$ [NC,OR]
-RewriteCond %{HTTP_HOST} ^www.emajine.co$
-RewriteCond %{REQUEST_URI} !public/
-RewriteRule (.*) /public/$1 [L]
-<FilesMatch "\.(php4|php5|php3|php2|php|phtml)$">
-SetHandler application/x-lsphp82
-</FilesMatch>
+RewriteEngine on RewriteCond %{HTTP_HOST} ^portal.emajine.co$ [NC,OR]
+RewriteCond %{HTTP_HOST} ^www.portal.emajine.co$ RewriteCond %{REQUEST_URI}
+!public/ RewriteRule (.*) /public/$1 [L]

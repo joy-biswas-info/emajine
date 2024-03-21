@@ -19,7 +19,7 @@ jobs:
         uses: SamKirkland/FTP-Deploy-Action@4.3.3
         with:
           server: 156.67.68.195
-          username: u192341568.portal1
+          username: u192341568.portal
           password: ${{ secrets.FTP_PASSWORD }}
         # Only for database, vendor, node_modules
       - name: Deploy to production
@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 65002
           script: |
-            cd /home/u192341568/domains/emajine.co/public_html
+            cd /home/u192341568/domains/emajine.co/public_html/portal
             php artisan down
             # cp .env.example .env
             php artisan key:generate

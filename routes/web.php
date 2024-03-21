@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('send.message');
     Route::get('/conversations', [ConversationController::class, 'index']);
     Route::post('/create-conversations', [ConversationController::class, 'createConversation']);
+    // Route::post('/create-conversations', [ConversationController::class, 'createConversation']);
 
     //! Service routes 
     Route::get('/services', [ServiceController::class, 'show'])->name('services');

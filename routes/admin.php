@@ -14,6 +14,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/users', [UserController::class, 'index']);
     Route::get('/getusers', [UserController::class, 'getUsers']);
     Route::get('/conversation', [ConversationController::class, 'show'])->name('all.conversation');
+    Route::get('/conversations', [AdminMessageController::class, 'adminConversations']);
     Route::get('/conversation/{id}', [AdminMessageController::class, 'show']);
     Route::get('/get-message/{id}', [AdminMessageController::class, 'getMessage']);
     // Add Services 

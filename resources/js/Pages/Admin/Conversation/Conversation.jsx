@@ -13,7 +13,7 @@ const Conversation = ({ auth }) => {
             });
         },
     });
-
+console.log(data);
     return (
         <Authenticated user={auth.user}>
             <div className="container mx-auto">
