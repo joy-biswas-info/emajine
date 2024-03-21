@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: 65002
           script: |
-            cd /home/u192341568/domains/emajine.co/public_html/portal
+            cd /home/u192341568/domains/emajine.co/public_html/
             php artisan down
             cp .env.example .env
             php artisan key:generate
