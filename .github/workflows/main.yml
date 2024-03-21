@@ -20,7 +20,7 @@ jobs:
         with:
           server: 154.56.47.209
           username: u192341568.portal
-          password: ${{ secrets.ftp_password }}
+          password: ${{ secrets.FTP_PASSWORD }}
         # Only for database, vendor, node_modules
       - name: Deploy to production
         uses: appleboy/ssh-action@master
