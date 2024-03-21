@@ -32,7 +32,7 @@ jobs:
           script: |
             cd /home/u192341568/domains/emajine.co/public_html/
             php artisan down
-            cp .env.example .env
+            # cp .env.example .env
             php artisan key:generate
             php -r "readfile('https://getcomposer.org/installer');" | php -c php.ini
             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
