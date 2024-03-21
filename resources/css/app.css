@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.item.owner {
+    flex-direction: row-reverse;
+}
+.item .time {
+    font-size: 10px;
+}
+.item .message {
+    flex-direction: row-reverse;
+    background-color: blue;
+    color: #fff;
+}
+
+.item.owner .message {
+    background-color: aquamarine;
+    padding: 5px;
+    border-radius: 5px;
+    color: #000;
+}

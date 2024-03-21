@@ -1,0 +1,46 @@
+# name: CD
+
+# on:
+#   push:
+#     branches: [main]
+
+# jobs:
+#   deploy:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - name: Set up Node
+#         uses: actions/setup-node@v1
+#         with:
+#           node-version: "19.x"
+#       - run: npm install
+#       - run: npm run build
+#       - name: 📂 Sync files
+#         uses: SamKirkland/FTP-Deploy-Action@4.3.3
+#         with:
+#           server: 154.56.47.209
+#           username: u192341568.portal
+#           password: ${{ secrets.ftp_password }}
+#         # Only for database, vendor, node_modules
+#       - name: Deploy to production
+#         uses: appleboy/ssh-action@master
+#         with:
+#           username: u192341568
+#           host: 154.56.47.209
+#           password: ${{ secrets.ssh_password }}
+#           port: 65002
+#           script: |
+#             cd /home/u192341568/domains/emajine.co/public_html/portal
+#             php artisan down
+#             # cp .env.example .env
+#             # php artisan key:generate
+#             php -r "readfile('https://getcomposer.org/installer');" | php -c php.ini
+#             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
+#             # php artisan migrate:fresh
+#             php artisan storage:link
+#             php artisan config:clear
+#             php artisan optimize:clear
+#             php artisan up
+
+#             #u192341568
+#             #Mritunj0y$+
