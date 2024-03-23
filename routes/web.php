@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\ConversationController;
+use App\Http\Controllers\FileController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Message\MessageController;
 use App\Http\Controllers\OrderController;
@@ -13,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
-Route::get('/', function () {
+Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversations', [ConversationController::class, 'index']);
     Route::post('/create-conversations', [ConversationController::class, 'createConversation']);
     // Route::post('/create-conversations', [ConversationController::class, 'createConversation']);
+    Route::get('/files/{conversationId}', [FileController::class, 'getFile']);
+    Route::post('/file', [FileController::class, 'uploadFile']);
 
     //! Service routes 
     Route::get('/services', [ServiceController::class, 'show'])->name('services');
@@ -37,9 +40,16 @@ Route::middleware('auth')->group(function () {
     Route::get('/checkout', [StripeController::class, 'checkout'])->name('checkout');
     Route::post('/session', [StripeController::class, 'session'])->name('session');
     Route::get('/success', [StripeController::class, 'success'])->name('success');
+    Route::get('/payment-success', [StripeController::class, 'paymentSuccess'])->name('payment_success');
+    // Order Route 
+    Route::get('/orders', [OrderController::class, 'index']);
 });
-Route::get('/retrive', [StripeController::class, 'retrive_session']);
 
+Route::get('/', [ServiceController::class, 'show'])->name('services');
+Route::get('/services', [ServiceController::class, 'show'])->name('services');
+Route::get('/all-services', [ServiceController::class, 'index'])->name('all.services');
+Route::get('/single/{service}', [ServiceController::class, 'single'])->name('single.services');
+Route::get('/single-service/{service}', [ServiceController::class, 'getSingleService'])->name('single.services');
 
 
 

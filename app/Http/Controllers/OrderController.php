@@ -6,16 +6,31 @@ use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
-use Stripe\Charge;
 use Stripe\PaymentIntent;
 use Stripe\Stripe;
-use Stripe\StripeClient;
 
 class OrderController extends Controller
 {
-    public function show()
+    public function index()
     {
-        return Inertia("Checkout/Checkout");
+        try {
+            $userId = Auth::user()->id;
+            $data = Order::where('user_id', $userId)->with('service')->get();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            return response()->json('An error occured:' . $th->getMessage());
+        }
+
+    }
+    public function orderAdmin()
+    {
+        $data = Order::get();
+        return response()->json($data, 200);
+    }
+
+    public function updateOrder()
+    {
+        return response()->json('Order updated', 200);
     }
 
 }

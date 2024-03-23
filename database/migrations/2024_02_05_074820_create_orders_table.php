@@ -13,9 +13,10 @@ return new class extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->integer('user_id');
-            $table->string('service_id');
+            $table->foreignId('user_id');
+            $table->foreignId('service_id');
             $table->string('stripe_session_id');
+            $table->string('payment_intent');
             $table->decimal('amount', 10, 2);
             $table->enum('status', OrderStatus::toArray())->default(OrderStatus::processing);
             $table->timestamps();

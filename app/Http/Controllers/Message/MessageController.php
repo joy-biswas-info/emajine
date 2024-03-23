@@ -44,7 +44,7 @@ class MessageController extends Controller
 
     public function getMessage($id)
     {
-        $data = Message::latest('created_at')->where('conversation_id', $id)->paginate(10);
+        $data = Message::latest('created_at')->where('conversation_id', $id)->paginate(30);
         return response()->json($data, 200);
     }
 }

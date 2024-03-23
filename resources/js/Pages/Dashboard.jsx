@@ -1,5 +1,7 @@
+import Orders from "@/Components/Orders";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
+import axios from "axios";
 
 export default function Dashboard({ auth }) {
     const handleMessage = async (recepeant) => {
@@ -11,6 +13,8 @@ export default function Dashboard({ auth }) {
                 router.visit("/message");
             });
     };
+
+
     return (
         <AuthenticatedLayout
             user={auth.user}
@@ -42,33 +46,8 @@ export default function Dashboard({ auth }) {
                     </div>
                 </div>
 
-                {/* Order Count  */}
-                <div className="orders ">
-                    <h2 className="text-2xl font-bold mt-4">Active Order</h2>
-                    <div className="order flex items-center">
-                        <h2 className="px-2 py-1 bg-green-500 text-white">
-                            Running Order <span> 1</span>{" "}
-                        </h2>
-                        <Link
-                            href="/message"
-                            className=" bg-black px-6 py-1 text-white"
-                        >
-                            Message
-                        </Link>
-                    </div>
-                    <div className="service-title px-3 mt-2">
-                        {/* link to single service  */}
-                        
-                            <ol className=" list-decimal">
-                                <li>
-                                <Link href="#">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dignissimos, autem.</Link>
-                                </li>
-                            
-                            </ol>
-                        
-                       
-                    </div>
-                </div>
+                    
+                        <Orders/>
                 <div className="services mt-12">
                 <Link href="/services" className="bg-black px-6 py-3 text-white">Get A Service</Link> or  <span
                     onClick={() => handleMessage(1)}
@@ -78,7 +57,6 @@ export default function Dashboard({ auth }) {
                 </span>
                 </div>
             </div>
-            <h2>Status</h2>
             
         </AuthenticatedLayout>
     );

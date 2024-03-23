@@ -14,6 +14,7 @@ class Service extends Model
         'description',
         'price',
         'thumb'
+
     ];
     public function service()
     {

@@ -44,7 +44,6 @@ class ServiceController extends Controller
 
         // Get the current timestamp
         $timestamp = now()->timestamp;
-
         // Generate a unique name for the thumbnail using the timestamp
         $customThumbName = $timestamp . '_' . 'emajine' . '.' . $request->file('thumb')->getClientOriginalExtension();
 
@@ -73,7 +72,6 @@ class ServiceController extends Controller
             return "No service Found";
         }
         ;
-
         return Inertia('Services/ServiceDetails');
     }
     public function getSingleService(Service $service)
