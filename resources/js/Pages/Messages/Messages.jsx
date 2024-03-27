@@ -8,8 +8,8 @@ import { FaArrowAltCircleDown, FaUser } from "react-icons/fa";
 import "./Messages.css";
 
 const Messages = ({ auth }) => {
-    const [fileData,setFileData]=useState(null);
-    const [refatch,setRefatch]=useState(false)
+    const [fileData, setFileData] = useState(null);
+    const [refatch, setRefatch] = useState(false);
     const {
         isLoading: conversationIsLoading,
         isError: conversationIsError,
@@ -29,6 +29,8 @@ const Messages = ({ auth }) => {
             axios.get(`/messages/${conversationData[0].id}`).then((res) => {
                 return res.data;
             }),
+        enabled: !!conversationData?.[0]?.id,
+
     });
 
     const mutation = useMutation({
@@ -37,8 +39,11 @@ const Messages = ({ auth }) => {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["message"]);
+
         },
     });
+
+  
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -61,16 +66,13 @@ const Messages = ({ auth }) => {
     // Fetch files when conversationData changes
 
     useEffect(() => {
-        setRefatch(false)
+        setRefatch(false);
         if (conversationData?.[0]?.id) {
             axios.get(`/files/${conversationData[0].id}`).then((result) => {
                 setFileData(result.data);
-
             });
         }
     }, [conversationData, refatch]);
-
-
 
     // Handle file upload
     const handleFile = async (e) => {
@@ -81,7 +83,7 @@ const Messages = ({ auth }) => {
         if (file) {
             uploadFileMutation.mutate(formData);
             e.target.value = "";
-            setRefatch(true)
+            setRefatch(true);
         }
     };
 
@@ -89,7 +91,7 @@ const Messages = ({ auth }) => {
         <Authenticated user={auth.user}>
             <Head title="Message" />
             <div className="container mx-auto flex flex-col md:flex-row gap-12 px-12 md:px-48 mt-12">
-                <div className="messagesContainer w-[460px} h-[450px] md:w-[520px] md:h-[650px] ">
+                <div className="messagesContainer w-[460px} h-[650px] md:w-[520px] flex flex-col justify-between content-between ">
                     <div className="flex gap-2 border-b-2">
                         <FaUser className="text-red-400 text-4xl mb-1" />
                         <p>Admin</p>
@@ -101,7 +103,7 @@ const Messages = ({ auth }) => {
                             "Something went wrong..."
                         )
                     ) : (
-                        <div className="messageContainer w-[460px} h-[450px] md:w-[520px] md:h-[650px] overflow-y-scroll">
+                        <div className="messageContainer w-[460px} h-[450px] md:w-[520px] overflow-y-scroll">
                             <div className="items my-4  flex flex-col gap-y-6">
                                 {data?.data
                                     .sort(
@@ -109,7 +111,7 @@ const Messages = ({ auth }) => {
                                             new Date(a.created_at) -
                                             new Date(b.created_at)
                                     )
-                                    .map((m) => (
+                                    .map((m, index) => (
                                         <>
                                             <div
                                                 className={
@@ -119,7 +121,10 @@ const Messages = ({ auth }) => {
                                                         : "item flex "
                                                 }
                                                 key={m.id}
-                                            >
+                                             
+                                                >
+
+                                               
                                                 <img
                                                     src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/9f97425c956ae56494390f595019869a-1677484348332/2c3c5d65-e9dc-4e72-b01e-7ad54a5a8648.jpeg"
                                                     alt=""
@@ -141,32 +146,33 @@ const Messages = ({ auth }) => {
                             </div>
                         </div>
                     )}
+                    <div>
+                        <form onSubmit={handleSubmit} className="flex flex-row">
+                            <textarea
+                                type="text"
+                                name="message"
+                                id=""
+                                className="p-1 bg-gray-200 border-0  w-[80%] lg:w-[100%]"
+                            />
+                            <input
+                                type="submit"
+                                value="Send"
+                                id="btn-message"
+                                className="bg-blue-500 p-1 text-white cursor-pointer w-[20%]"
+                            />
+                        </form>
 
-                    <form onSubmit={handleSubmit} className="flex flex-row">
-                        <textarea
-                            type="text"
-                            name="message"
-                            id=""
-                            className="p-1 bg-gray-200 border-0  w-[80%] lg:w-[100%]"
-                        />
-                        <input
-                            type="submit"
-                            value="Send"
-                            id="btn-message"
-                            className="bg-blue-500 p-1 text-white cursor-pointer w-[20%]"
-                        />
-                    </form>
-
-                    <form className="mt-2">
-                        <input
-                            type="file"
-                            name="file"
-                            id="file"
-                            accept=".pdf,.png,.jpg,.jpeg,.mp4,.docx,.doc"
-                            onChange={(e) => handleFile(e)}
-                        />
-                        <p>.pdf,.png,.jpg,.jpeg,.mp4,.docx,.doc</p>
-                    </form>
+                        <form className="mt-2">
+                            <input
+                                type="file"
+                                name="file"
+                                id="file"
+                                accept=".pdf,.png,.jpg,.jpeg,.mp4,.docx,.doc"
+                                onChange={(e) => handleFile(e)}
+                            />
+                            <p>.pdf,.png,.jpg,.jpeg,.mp4,.docx,.doc</p>
+                        </form>
+                    </div>
                 </div>
 
                 <>

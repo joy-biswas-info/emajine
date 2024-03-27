@@ -18,6 +18,7 @@ return new class extends Migration {
             $table->timestamp('email_verified_at')->nullable();
             $table->enum('role', UserRole::toArray())->default(UserRole::user);
             $table->string('password');
+            $table->string('profile_picture');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -60,11 +60,9 @@ const CreateService = ({auth}) => {
         try {
           const response = await axios.post('/admin/add-services', formDataToSend);
     
-          console.log('Form data sent successfully!', response.data);
-          // Handle success, e.g., redirect or display a success message
+          console.log('Service added!', response.data);
         } catch (error) {
           console.error('Error sending form data:', error);
-          // Handle error, e.g., display an error message
         }
       };
 
