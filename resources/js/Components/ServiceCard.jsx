@@ -2,15 +2,6 @@ import { Link } from "@inertiajs/react";
 
 const ServiceCard = ({ service }) => {
 
-    // const handleMessage = async (recepeant) => {
-    //     await axios
-    //         .post("/create-conversations/", {
-    //             recepeant: recepeant,
-    //         })
-    //         .then((res) => {
-    //             router.visit("/message");
-    //         });
-    // };
 
 
     return (
@@ -21,7 +12,7 @@ const ServiceCard = ({ service }) => {
                 alt="Service Thumbnail"
             />
             <div className="px-6 py-4">
-                <Link href={`/single/${service.id}`} >
+                <Link href={`/single/${service.id}`}>
 
                 <div className="font-bold text-xl mb-2">{service.title}</div>
                 </Link>
@@ -33,12 +24,6 @@ const ServiceCard = ({ service }) => {
                 <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
                     CAD {service.price}
                 </span>
-                {/* <span
-                    onClick={() => handleMessage(1)}
-                    className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 cursor-pointer"
-                >
-                    Message Now
-                </span> */}
                 
                 <form action="/session" method="POST">
                     <input type="hidden" name="service_id" value={service.id}/>

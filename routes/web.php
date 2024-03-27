@@ -7,6 +7,7 @@ use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\Message\MessageController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\UserController;
@@ -43,8 +44,14 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment-success', [StripeController::class, 'paymentSuccess'])->name('payment_success');
     // Order Route 
     Route::get('/orders', [OrderController::class, 'index']);
+
+    // Invoice 
+    Route::get('/invoices', [InvoiceController::class, 'index']);
+    // Review 
+    Route::post('/add-review', [ReviewController::class, 'store']);
 });
 
+Route::get('/reviews/{serviceId}', [ReviewController::class, 'index']);
 Route::get('/', [ServiceController::class, 'show'])->name('services');
 Route::get('/services', [ServiceController::class, 'show'])->name('services');
 Route::get('/all-services', [ServiceController::class, 'index'])->name('all.services');

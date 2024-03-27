@@ -1,3 +1,4 @@
+import Invoices from "@/Components/Invoices";
 import Orders from "@/Components/Orders";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
@@ -13,7 +14,6 @@ export default function Dashboard({ auth }) {
                 router.visit("/message");
             });
     };
-
 
     return (
         <AuthenticatedLayout
@@ -32,32 +32,25 @@ export default function Dashboard({ auth }) {
                         Hello, {auth.user.name}{" "}
                     </h2>
                 </div>
-                <div className="invoices">
-                    <h2 className="text-2xl font-bold mt-4">Due invoice</h2>
-                    <div className="flex items-center rounded-md ">
-                        {" "}
-                        <h4 className="p-1 bg-red-500 text-white px-2">you Have $50 due to pay</h4>{" "}
-                        <Link
-                            href="#"
-                            className=" bg-black px-6 py-1 text-white"
-                        >
-                            Pay <span>$50 </span>
-                        </Link>{" "}
-                    </div>
-                </div>
 
-                    
-                        <Orders/>
+                <Invoices />
+                <Orders />
                 <div className="services mt-12">
-                <Link href="/services" className="bg-black px-6 py-3 text-white">Get A Service</Link> or  <span
-                    onClick={() => handleMessage(1)}
-                    className="bg-black px-6 py-3 text-white cursor-pointer"
-                >
-                    Message Now
-                </span>
+                    <Link
+                        href="/services"
+                        className="bg-black px-6 py-3 text-white"
+                    >
+                        Get A Service
+                    </Link>{" "}
+                    or{" "}
+                    <span
+                        onClick={() => handleMessage(1)}
+                        className="bg-black px-6 py-3 text-white cursor-pointer"
+                    >
+                        Message Now
+                    </span>
                 </div>
             </div>
-            
         </AuthenticatedLayout>
     );
 }

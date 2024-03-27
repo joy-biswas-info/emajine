@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use App\Models\User;
+use Auth;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Stripe\Stripe;
 use Stripe\StripeClient;
+use Stripe\Invoice as StripeInvoice;
+
 
 
 class InvoiceController extends Controller
@@ -37,7 +41,6 @@ class InvoiceController extends Controller
             ]
 
         );
-
 
         $customer = $stripe->customers->create(
             [
@@ -70,8 +73,6 @@ class InvoiceController extends Controller
 
         $sent = $stripe->invoices->sendInvoice($init_invoice['id'], []);
         Invoice::create([
-            'price_id' => $price['id'],
-            'customer_id' => $customer['id'],
             'invoice_id' => $init_invoice['id'],
             'user_id' => $user->id,
             'currency' => $request->currency,
@@ -80,5 +81,28 @@ class InvoiceController extends Controller
             'url' => $sent['hosted_invoice_url']
         ]);
         return response()->json('Invoice Created Successfully', 200);
+    }
+
+    public function index()
+    {
+        Stripe::setApiKey(config('stripe.sk'));
+        $userId = Auth::user()->id;
+        $data = Invoice::where('user_id', $userId)->get();
+        $invoicesData = [];
+
+        foreach ($data as $item) {
+            $invoice = StripeInvoice::retrieve($item->invoice_id);
+            // $invoicesData[] = $invoice;
+            $invoicesData[] = [
+                'invoice_id' => $invoice->id,
+                'amount_due' => $invoice->amount_due,
+                'amount_paid' => $invoice->amount_paid,
+                'status' => $invoice->status,
+                'url' => $invoice->hosted_invoice_url,
+            ];
+        }
+        ;
+
+        return response()->json($invoicesData, 200);
     }
 }

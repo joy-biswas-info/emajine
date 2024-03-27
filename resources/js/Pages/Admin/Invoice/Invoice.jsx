@@ -17,10 +17,15 @@ const Invoice = ({auth,users}) => {
     }
     const handleSubmit=(e)=>{
         e.preventDefault();
-
-        axios.post('/create-invoice',{
+        axios.post('/admin/create-invoice',{
             ...formData
-        })
+        }).then(
+            res=>console.log(res),
+            setFormData({user_id: '',
+            price: '',
+            service: '',
+            currency:'cad',})
+        )
       
     }
     return (
