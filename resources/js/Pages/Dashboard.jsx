@@ -7,10 +7,10 @@ import axios from "axios";
 export default function Dashboard({ auth }) {
     const handleMessage = async (recepeant) => {
         await axios
-            .post("/create-conversations/", {
+            .post("/create-conversations", {
                 recepeant: recepeant,
             })
-            .then((res) => {
+            .then(() => {
                 router.visit("/message");
             });
     };
