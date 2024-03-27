@@ -179,12 +179,12 @@ const Messages = ({ auth }) => {
                                         <div className="image-container">
                                             <img
                                                 className="h-12 w-12"
-                                                src={file.file}
+                                                src={`/storage/${file.file}`}
                                                 alt=""
                                             />
                                             <a
                                                 className="download-link"
-                                                href={file.file}
+                                                href={`/storage/${file.file}`}
                                                 download
                                             >
                                                 <FaArrowAltCircleDown />
@@ -200,13 +200,13 @@ const Messages = ({ auth }) => {
                                                 controls
                                             >
                                                 <source
-                                                    src={file.file}
+                                                    src={`/storage/${file.file}`}
                                                     type="video/mp4"
                                                 />
                                             </video>
                                             <a
                                                 className="download-link"
-                                                href={file.file}
+                                                href={`/storage/${file.file}`}
                                                 download
                                             >
                                                 <FaArrowAltCircleDown />
@@ -214,7 +214,7 @@ const Messages = ({ auth }) => {
                                         </div>
                                     ) : (
                                         <a
-                                            href={file.file}
+                                            href={`/storage/${file.file}`}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
