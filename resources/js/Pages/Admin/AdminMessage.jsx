@@ -1,3 +1,4 @@
+import AdminLayout from '@/Layouts/AdminLayout';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -44,7 +45,7 @@ const AdminMessage = ({ auth, param }) => {
 
 
     return (
-        <Authenticated user={auth.user}>
+        <AdminLayout user={auth.user}>
             <div className='container mx-auto flex gap-12'>
                 <div className="usersContainer h-[550px] w-[350px] border p-1">
                     <div>
@@ -88,7 +89,7 @@ const AdminMessage = ({ auth, param }) => {
                 </div>
 
             </div>
-        </Authenticated>
+        </AdminLayout>
     );
 };
 

@@ -17,11 +17,17 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
     Route::get('/conversations', [AdminMessageController::class, 'adminConversations']);
     Route::get('/conversation/{id}', [AdminMessageController::class, 'show']);
     Route::get('/get-message/{id}', [AdminMessageController::class, 'getMessage']);
+
+
     // Add Services 
     Route::get('/add-services', [ServiceController::class, 'create'])->name('add.services');
     Route::post('/add-services', [ServiceController::class, 'store'])->name('store.services');
+    Route::get('/all-services', [ServiceController::class, 'createAllServices'])->name('all.services');
+
+
+
     // Sent invoices 
-    Route::get("/invoice", [InvoiceController::class, 'show']);
+    Route::get("/invoice", [InvoiceController::class, 'show'])->name('invoices');
     Route::post("/create-invoice", [InvoiceController::class, 'store']);
 
     // ====================

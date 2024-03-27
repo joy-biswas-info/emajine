@@ -19,8 +19,8 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-white border-b border-gray-100">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <nav className="bg-gray-300 border-b border-gray-100 py-2">
+                <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
                             <div className="shrink-0 flex items-center">
@@ -39,8 +39,7 @@ export default function Authenticated({ user, header, children }) {
                             </div>
                             {user.role === "User" && (
                                 <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    {!isLoading && !isError &&
-                                    (
+                                    {!isLoading && !isError && (
                                         <NavLink
                                             href={route("messages")}
                                             active={route().current("messages")}
@@ -217,15 +216,17 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            {header && (
+            {/* {header && (
                 <header className="bg-white shadow">
                     <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
                         {header}
                     </div>
                 </header>
-            )}
+            )} */}
 
-            <main>{children}</main>
+            <main className="container max-w-8xl mx-auto">
+                {children}
+            </main>
         </div>
     );
 }

@@ -28,6 +28,10 @@ class ServiceController extends Controller
     {
         return Inertia::render("Admin/Services/AddServices");
     }
+    public function createAllServices()
+    {
+        return Inertia::render("Admin/Services/AllServices");
+    }
 
 
     //! Store services 
@@ -49,7 +53,6 @@ class ServiceController extends Controller
 
         // Store the file with the custom name
         $thumbPath = $request->file('thumb')->storeAs('images', $customThumbName, 'public');
-
         // Create a new resource using the model
 
         $service = Service::create([
@@ -61,9 +64,7 @@ class ServiceController extends Controller
         ]);
 
         // Optionally, you can redirect to a success page or return a response
-
         return response()->json('Successfully', 201);
-
     }
 
     public function single(Service $service)

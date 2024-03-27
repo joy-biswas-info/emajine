@@ -1,4 +1,5 @@
 
+import AdminLayout from '@/Layouts/AdminLayout';
 import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
 import { useQuery } from '@tanstack/react-query';
@@ -15,7 +16,7 @@ const Conversation = ({ auth }) => {
     });
 console.log(data);
     return (
-        <Authenticated user={auth.user}>
+        <AdminLayout user={auth.user}>
             <div className="container mx-auto">
                 <div className="conversations">
                     {isLoading ? "Loading" : isError ? "error" : data.map((c) => (
@@ -33,7 +34,7 @@ console.log(data);
                     ))}
                 </div>
             </div>
-        </Authenticated>
+        </AdminLayout>
     );
 };
 

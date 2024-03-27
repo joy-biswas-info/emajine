@@ -29,6 +29,8 @@ class InvoiceController extends Controller
         }
 
         $stripe = new StripeClient(config('stripe.sk'));
+
+        // have to find out the service using the service id and add the service id to the invoice service id 
         $product = $stripe->products->create([
             'name' => $request->service,
         ]);
@@ -78,7 +80,8 @@ class InvoiceController extends Controller
             'currency' => $request->currency,
             'expire' => 30,
             'price' => $request->price,
-            'url' => $sent['hosted_invoice_url']
+            'url' => $sent['hosted_invoice_url'],
+            'service_id' => $product->id
         ]);
         return response()->json('Invoice Created Successfully', 200);
     }
@@ -92,7 +95,6 @@ class InvoiceController extends Controller
 
         foreach ($data as $item) {
             $invoice = StripeInvoice::retrieve($item->invoice_id);
-            // $invoicesData[] = $invoice;
             $invoicesData[] = [
                 'invoice_id' => $invoice->id,
                 'amount_due' => $invoice->amount_due,

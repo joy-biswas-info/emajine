@@ -14,6 +14,7 @@ class Invoice extends Model
         'currency',
         'expire',
         'price',
-        'url'
+        'url',
+        'service_id'
     ];
 }
