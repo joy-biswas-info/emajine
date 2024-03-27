@@ -8,7 +8,8 @@ import { FaArrowAltCircleDown, FaUser } from "react-icons/fa";
 import "./Messages.css";
 
 const Messages = ({ auth }) => {
-    const [fileData,setFileData]=useState(null)
+    const [fileData,setFileData]=useState(null);
+    const [refatch,setRefatch]=useState(false)
     const {
         isLoading: conversationIsLoading,
         isError: conversationIsError,
@@ -58,16 +59,16 @@ const Messages = ({ auth }) => {
     });
 
     // Fetch files when conversationData changes
-    useEffect(() => {
-        if (conversationData?.[0]?.id) {
 
-                    axios.get(
-                        `/files/${conversationData[0].id}`
-                    ).then((result)=>{
-                        setFileData(result.data)
-                    });
+    useEffect(() => {
+        setRefatch(false)
+        if (conversationData?.[0]?.id) {
+            axios.get(`/files/${conversationData[0].id}`).then((result) => {
+                setFileData(result.data);
+
+            });
         }
-    }, [conversationData, queryClient]);
+    }, [conversationData, refatch]);
 
 
 
@@ -80,6 +81,7 @@ const Messages = ({ auth }) => {
         if (file) {
             uploadFileMutation.mutate(formData);
             e.target.value = "";
+            setRefatch(true)
         }
     };
 
