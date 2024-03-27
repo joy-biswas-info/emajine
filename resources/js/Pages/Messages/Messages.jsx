@@ -32,7 +32,7 @@ const Messages = ({ auth }) => {
 
     const mutation = useMutation({
         mutationFn: (message) => {
-            return axios.post(`/send-message/`, message);
+            return axios.post(`/send-message`, message);
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["message"]);
