@@ -8,23 +8,18 @@ import { FaArrowAltCircleDown, FaUser } from "react-icons/fa";
 import "./Messages.css";
 
 const Messages = ({ auth }) => {
-    const [conversationData,setConversationData] = useState({})
-
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await axios.get("/conversations");
-                setConversationData(response.data);
-            } catch (error) {
-                // Handle error
-                console.error("Error fetching conversations:", error);
-            }
-        };
-    
-        fetchData();
-    
-    }, []);
-    
+    const [fileData,setFileData]=useState(null)
+    const {
+        isLoading: conversationIsLoading,
+        isError: conversationIsError,
+        data: conversationData,
+    } = useQuery({
+        queryKey: ["Conversation"],
+        queryFn: () =>
+            axios.get("/conversations").then((res) => {
+                return res.data;
+            }),
+    });
 
     const queryClient = useQueryClient();
     const { isLoading, isError, data } = useQuery({
@@ -34,7 +29,6 @@ const Messages = ({ auth }) => {
                 return res.data;
             }),
     });
-
 
     const mutation = useMutation({
         mutationFn: (message) => {
@@ -55,38 +49,36 @@ const Messages = ({ auth }) => {
         e.target[0].value = "";
     };
 
-    // File
-    const {
-        isLoading: fileIsLoading,
-        isError: fileIsError,
-        data: fileData,
-    } = useQuery({
-        queryKey: ["files"],
-        queryFn: async () => {
-            return await axios
-                .get(`/files/${conversationData[0]?.id}`)
-                .then((res) => {
-                    return res.data;
-                });
-        },
-    });
-
-    const fileMutation = useMutation({
-        mutationFn: (file) => {
-            return axios.post(`/file`, file);
-        },
+    // Mutation for uploading files
+    const uploadFileMutation = useMutation({
+        mutationFn: (file) => axios.post(`/file`, file),
         onSuccess: () => {
-            queryClient.invalidateQueries(["file"]);
+            queryClient.invalidateQueries(["files"]);
         },
     });
 
+    // Fetch files when conversationData changes
+    useEffect(() => {
+        if (conversationData?.[0]?.id) {
+
+                    axios.get(
+                        `/files/${conversationData[0].id}`
+                    ).then((result)=>{
+                        setFileData(result.data)
+                    });
+        }
+    }, [conversationData, queryClient]);
+
+
+
+    // Handle file upload
     const handleFile = async (e) => {
         const file = e.target.files[0];
         const formData = new FormData();
         formData.append("file", file);
-        formData.append("conversation_id", conversationData[0]?.id);
+        formData.append("conversation_id", conversationData?.[0]?.id);
         if (file) {
-            fileMutation.mutate(formData);
+            uploadFileMutation.mutate(formData);
             e.target.value = "";
         }
     };
@@ -95,11 +87,10 @@ const Messages = ({ auth }) => {
         <Authenticated user={auth.user}>
             <Head title="Message" />
             <div className="container mx-auto flex flex-col md:flex-row gap-12 px-12 md:px-48 mt-12">
-                <div className="messagesContainer">
-
-                    <div className="flex gap-2 border-b-2"> 
-                    <FaUser className="text-red-400 text-4xl mb-1"/> 
-                    <p>Admin</p>
+                <div className="messagesContainer w-[460px} h-[450px] md:w-[520px] md:h-[650px] ">
+                    <div className="flex gap-2 border-b-2">
+                        <FaUser className="text-red-400 text-4xl mb-1" />
+                        <p>Admin</p>
                     </div>
                     {isLoading ? (
                         "Loading..." ? (
@@ -109,7 +100,6 @@ const Messages = ({ auth }) => {
                         )
                     ) : (
                         <div className="messageContainer w-[460px} h-[450px] md:w-[520px] md:h-[650px] overflow-y-scroll">
-
                             <div className="items my-4  flex flex-col gap-y-6">
                                 {data?.data
                                     .sort(
@@ -147,7 +137,6 @@ const Messages = ({ auth }) => {
                                         </>
                                     ))}
                             </div>
-                            
                         </div>
                     )}
 
@@ -177,83 +166,67 @@ const Messages = ({ auth }) => {
                         <p>.pdf,.png,.jpg,.jpeg,.mp4,.docx,.doc</p>
                     </form>
                 </div>
-                
-                    <>
-                        <div>
-                            <h2>Shared Files</h2>
-                            <div className="flex flex-wrap flex-col md:flex-row gap-2 h-[550px] w-[250px] overflow-y-scroll">
-                                {fileIsLoading
-                                    ? "Loading..."
-                                    : fileIsError
-                                    ? "Something went wrong..."
-                                    : fileData?.map((file) => (
-                                          <div
-                                              key={file.id}
-                                              className="file-container"
-                                          >
-                                              {["png", "jpg", "jpeg"].includes(
-                                                  file.file
-                                                      .split(".")
-                                                      .pop()
-                                                      .toLowerCase()
-                                              ) ? (
-                                                  <div className="image-container">
-                                                      <img
-                                                          className="h-12 w-12"
-                                                          src={file.file}
-                                                          alt=""
-                                                      />
-                                                      <a
-                                                          className="download-link"
-                                                          href={file.file}
-                                                          download
-                                                      >
-                                                          <FaArrowAltCircleDown />
 
-                                                      </a>
-                                                  </div>
-                                              ) : file.file
-                                                    .split(".")
-                                                    .pop()
-                                                    .toLowerCase() === "mp4" ? (
-                                                  <div>
-                                                      <video
-                                                          className="h-12 w-12"
-                                                          controls
-                                                      >
-                                                          <source
-                                                              src={file.file}
-                                                              type="video/mp4"
-                                                          />
-                                                      </video>
-                                                      <a
-                                                          className="download-link"
-                                                          href={file.file}
-                                                          download
-                                                      >
-                                                          <FaArrowAltCircleDown />
-
-                                                      </a>
-                                                  </div>
-                                              ) : (
-                                                  <a
-                                                      href={file.file}
-                                                      target="_blank"
-                                                      rel="noopener noreferrer"
-                                                  >
-                                                      {file.file
-                                                          .split("/")
-                                                          .pop()}
-                                                          <FaArrowAltCircleDown />
-
-                                                  </a>
-                                              )}
-                                          </div>
-                                      ))}
-                            </div>
+                <>
+                    <div>
+                        <h2>Shared Files</h2>
+                        <div className="flex flex-wrap flex-col md:flex-row gap-2 h-[550px] w-[250px] overflow-y-scroll">
+                            {fileData?.map((file) => (
+                                <div key={file.id} className="file-container">
+                                    {["png", "jpg", "jpeg"].includes(
+                                        file.file.split(".").pop().toLowerCase()
+                                    ) ? (
+                                        <div className="image-container">
+                                            <img
+                                                className="h-12 w-12"
+                                                src={file.file}
+                                                alt=""
+                                            />
+                                            <a
+                                                className="download-link"
+                                                href={file.file}
+                                                download
+                                            >
+                                                <FaArrowAltCircleDown />
+                                            </a>
+                                        </div>
+                                    ) : file.file
+                                          .split(".")
+                                          .pop()
+                                          .toLowerCase() === "mp4" ? (
+                                        <div>
+                                            <video
+                                                className="h-12 w-12"
+                                                controls
+                                            >
+                                                <source
+                                                    src={file.file}
+                                                    type="video/mp4"
+                                                />
+                                            </video>
+                                            <a
+                                                className="download-link"
+                                                href={file.file}
+                                                download
+                                            >
+                                                <FaArrowAltCircleDown />
+                                            </a>
+                                        </div>
+                                    ) : (
+                                        <a
+                                            href={file.file}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                        >
+                                            {file.file.split("/").pop()}
+                                            <FaArrowAltCircleDown />
+                                        </a>
+                                    )}
+                                </div>
+                            ))}
                         </div>
-                    </>
-                
+                    </div>
+                </>
             </div>
         </Authenticated>
     );
