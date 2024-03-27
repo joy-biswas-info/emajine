@@ -1,5 +1,5 @@
 import Authenticated from '@/Layouts/AuthenticatedLayout';
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 const CreateService = ({auth}) => {
     const [formData, setFormData] = useState({
@@ -58,7 +58,7 @@ const CreateService = ({auth}) => {
         }
     
         try {
-          const response = await axios.post('http://emajine.test/add-services', formDataToSend);
+          const response = await axios.post('/admin/add-services', formDataToSend);
     
           console.log('Form data sent successfully!', response.data);
           // Handle success, e.g., redirect or display a success message

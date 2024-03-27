@@ -36,8 +36,8 @@ jobs:
             php artisan key:generate
             php -r "readfile('https://getcomposer.org/installer');" | php -c php.ini
             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
-            php artisan migrate:fresh
-            php artisan storage:link
+            # php artisan migrate:fresh
+            # php artisan storage:link
             php artisan config:clear
             php artisan optimize:clear
             php artisan up

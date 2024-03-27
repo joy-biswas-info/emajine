@@ -111,7 +111,7 @@ const Messages = ({ auth }) => {
                         <div className="messageContainer w-[460px} h-[450px] md:w-[520px] md:h-[650px] overflow-y-scroll">
 
                             <div className="items my-4  flex flex-col gap-y-6">
-                                {data.data
+                                {data?.data
                                     .sort(
                                         (a, b) =>
                                             new Date(a.created_at) -
