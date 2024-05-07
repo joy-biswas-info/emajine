@@ -3,6 +3,7 @@ import Orders from "@/Components/Orders";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link, router } from "@inertiajs/react";
 import axios from "axios";
+import { FaTools } from "react-icons/fa";
 
 export default function Dashboard({ auth }) {
     const handleMessage = async (recepeant) => {
@@ -16,26 +17,32 @@ export default function Dashboard({ auth }) {
     };
 
     return (
-        <AuthenticatedLayout
-            user={auth.user}
-            header={
-                <h2 className="font-semibold text-xl text-gray-800 leading-tight">
-                    Dashboard
-                </h2>
-            }
-        >
+        <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
             <div className="container mx-auto">
                 {/* Welcome  */}
-                <div className="welcome pb-2 mt-6 border-black border-b-4">
+                {/* <div className="welcome pb-2 mt-6 border-black border-b-2">
                     <h2 className="text-3xl font-bold">
                         Hello, {auth.user.name}{" "}
                     </h2>
+                </div> */}
+                <div className="w-48 mx-auto mt-10 ">
+                    <img
+                        src={`storage/${auth.user.profile_picture}`}
+                        alt="profile_picture"
+                        className="rounded-full w-24 h-24 object-fill mx-auto"
+                    />
+                    <p className="text-center">{auth.user.name}</p>
+                    <Link href="/profile">
+
+                    <button className="btn btn-warning rounded-none mx-auto mt-4 w-48">Edit Profile <FaTools/> </button>
+                    </Link>
                 </div>
 
-                <Invoices />
-                <Orders />
-                <div className="services mt-12">
+                    <Invoices />
+                    <Orders />
+
+                <div className="my-6 mx-auto max-w-lg">
                     <Link
                         href="/services"
                         className="bg-black px-6 py-3 text-white"
@@ -43,12 +50,12 @@ export default function Dashboard({ auth }) {
                         Get A Service
                     </Link>{" "}
                     or{" "}
-                    <span
+                    <button
                         onClick={() => handleMessage(1)}
                         className="bg-black px-6 py-3 text-white cursor-pointer"
                     >
                         Message Now
-                    </span>
+                    </button>
                 </div>
             </div>
         </AuthenticatedLayout>

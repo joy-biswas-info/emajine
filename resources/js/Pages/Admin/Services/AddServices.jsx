@@ -1,4 +1,5 @@
 import AdminLayout from '@/Layouts/AdminLayout';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 const CreateService = ({auth}) => {
@@ -75,6 +76,7 @@ const CreateService = ({auth}) => {
 
     return (
         <AdminLayout user={auth.user}>
+<Head title='Add Service'></Head>
             <div className="">
                 <h2 className="text-3xl mb-4 text-black font-bold">Add a service</h2>
             </div>

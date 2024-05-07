@@ -1,4 +1,5 @@
 import AdminLayout from '@/Layouts/AdminLayout';
+import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 const Invoice = ({auth,users}) => {
@@ -31,6 +32,7 @@ const Invoice = ({auth,users}) => {
     
     return (
         <AdminLayout user={auth.user}>
+            <Head title='Send Invoice'/>
             <div className="max-w-5xl  bg-white p-8 mt-10 rounded">
                 <h2 className="text-3xl mb-4 text-black font-bold">
                     Send Invoice to Customer

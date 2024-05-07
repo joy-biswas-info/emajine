@@ -10,6 +10,10 @@ class File extends Model
     use HasFactory;
     protected $fillable = [
         'file',
-        'conversation_id',
+        'message_id',
     ];
+    public function file()
+    {
+        return $this->belongsTo(Message::class, 'message_id');
+    }
 }

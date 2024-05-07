@@ -16,7 +16,6 @@ return new class extends Migration {
             $table->string('to_id');
             $table->string('from_id');
             $table->string('message');
-            $table->string('seen')->default(false);
             $table->foreignId('conversation_id');
 
         });

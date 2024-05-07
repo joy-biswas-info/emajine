@@ -19,7 +19,7 @@ class AdminMessageController extends Controller
 
     public function getMessage($id)
     {
-        $data = Message::latest('created_at')->where('conversation_id', $id)->paginate(10);
+        $data = Message::latest('created_at')->where('conversation_id', $id)->with('file', 'fromUser', 'toUser')->paginate(30);
         return response()->json($data, 200);
     }
     public function adminConversations()

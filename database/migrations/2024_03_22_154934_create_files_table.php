@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->timestamps();
             $table->string('file');
-            $table->foreignId('conversation_id');
+            $table->foreignId('message_id');
         });
     }
 

@@ -10,6 +10,8 @@ class Conversation extends Model
     use HasFactory;
     protected $fillable = [
         'last_message',
+        'seen_by_admin',
+        'seen_by_user',
     ];
 
     public $timestamps = true;
@@ -17,6 +19,7 @@ class Conversation extends Model
     {
         return $this->hasMany(Message::class);
     }
+
     public function sender()
     {
         return $this->belongsTo(User::class, 'from_id');

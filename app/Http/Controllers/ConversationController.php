@@ -51,6 +51,26 @@ class ConversationController extends Controller
         }
         return response()->json(['conversation' => $conversation]);
     }
-    
+    public function updateConversation(Request $request)
+    {
+        $conversation = Conversation::find($request->conversation_id);
+        $userRole = Auth::user()->role;
+        if ($conversation && $userRole === "Admin") {
+            $conversation->update(['seen_by_admin' => true]);
+        } else {
+            $conversation->update(['seen_by_user' => true]);
+        }
 
+        return response()->json('Updated');
+
+    }
+
+    public function conversation(Request $request)
+    {
+        $userId = Auth::user()->id;
+        $conversation = Conversation::where('from_id', $userId)->get();
+        return response()->json(['conversation' => $conversation]);
+
+
+    }
 }

@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->string('to_id');
             $table->string('from_id');
             $table->string('last_message')->nullable();
+            $table->string('seen_by_admin')->default(false);
+            $table->string('seen_by_user')->default(false);
             $table->timestamps();
         });
     }

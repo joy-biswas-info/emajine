@@ -11,8 +11,6 @@ use Stripe\Stripe;
 use Stripe\StripeClient;
 use Stripe\Invoice as StripeInvoice;
 
-
-
 class InvoiceController extends Controller
 {
     public function show()

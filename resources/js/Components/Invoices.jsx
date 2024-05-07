@@ -9,7 +9,7 @@ const Invoices = () => {
             }),
     });
     return (
-        <div>
+        <div className="max-w-lg mx-auto">
             {isLoading ? (
                 "Loading" ? (
                     isError
@@ -18,7 +18,7 @@ const Invoices = () => {
                 )
             ) : (
                 <>
-                <h2 className="mt-5 text-2xl font-bold">Invoice to pay</h2>
+                    <h2 className="mt-5 text-2xl font-bold">Invoice to pay</h2>
                     {
                         <table>
                             <thead>
@@ -51,11 +51,17 @@ const Invoices = () => {
                                         <td className="py-2 px-4">
                                             {invoice.amount_due ==
                                             invoice.amount_paid ? (
-                                                <button className="bg-green-500 px-4 py-1 text-white">Paid</button>
-                                                
+                                                <button className="bg-green-500 px-4 py-1 text-white">
+                                                    Paid
+                                                </button>
                                             ) : (
-                                                
-                                                <a target="_blank" className="px-4 py-1 bg-red-500 text-white" href={invoice.url}>Pay</a>
+                                                <a
+                                                    target="_blank"
+                                                    className="px-4 py-1 bg-red-500 text-white"
+                                                    href={invoice.url}
+                                                >
+                                                    Pay
+                                                </a>
                                             )}
                                         </td>
                                     </tr>

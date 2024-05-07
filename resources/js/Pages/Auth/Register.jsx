@@ -14,10 +14,10 @@ export default function Register() {
         email: "",
         password: "",
         password_confirmation: "",
-        profile_picture: null, // New state for profile picture
+        profile_picture: null, 
     });
 
-    const [dragOver, setDragOver] = useState(false); // State to manage drag over effect
+    const [dragOver, setDragOver] = useState(false); 
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];

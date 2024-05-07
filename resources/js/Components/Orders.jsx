@@ -13,16 +13,14 @@ const Orders = () => {
 
 
     return (
-        <div>
-            <h2 className="text-2xl font-bold mt-4">
-                Total Order {data?.length}
-            </h2>
+        <div className="max-w-lg mx-auto" >
             {isLoading ? (
                 "Loading"
             ) : isError ? (
                 "Something went wrong"
             ) : (
-                <>
+                <>            <h2 className="text-2xl font-bold mt-4 ">Orders</h2>
+
                     <table className="mt-5">
                         <thead>
                             <tr className="bg-gray-200">
@@ -50,9 +48,7 @@ const Orders = () => {
                                         {order.status}
                                     </td>
 
-                                    <button
-                                        className='btn btn-primary'
-                                    >
+                                    <button className="btn btn-primary">
                                         Review
                                     </button>
                                 </tr>

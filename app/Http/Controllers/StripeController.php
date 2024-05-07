@@ -44,6 +44,7 @@ class StripeController extends Controller
             'success_url' => "http://emajine.test/success?session_id={CHECKOUT_SESSION_ID}&service_id={$serviceId}",
             'cancel_url' => route('services'),
         ]);
+        
         return redirect()->away($session->url);
     }
 

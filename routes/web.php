@@ -28,7 +28,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/messages/{id}', [MessageController::class, 'getMessage']);
     Route::post('/send-message', [MessageController::class, 'sendMessage'])->name('send.message');
     Route::get('/conversations', [ConversationController::class, 'index']);
+    Route::get('/conversation', [ConversationController::class, 'conversation']);
     Route::post('/create-conversations', [ConversationController::class, 'createConversation']);
+    Route::post('/update-conversations', [ConversationController::class, 'updateConversation']);
 
     Route::get('/files/{conversationId}', [FileController::class, 'getFile']);
     Route::post('/file', [FileController::class, 'uploadFile']);

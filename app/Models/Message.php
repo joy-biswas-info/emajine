@@ -27,6 +27,10 @@ class Message extends Model
     {
         return $this->belongsTo(User::class, 'to_id');
     }
+    public function file()
+    {
+        return $this->hasMany(File::class);
+    }
 
 
 }

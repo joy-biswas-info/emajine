@@ -24,7 +24,7 @@ const Services = ({ auth }) => {
                         <h2 className="mt-8 text-2xl font-bold text-gray-700">
                             Our Services
                         </h2>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-8">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                             {isLoading ? (
                                 <div className="gap-2">
                                     <ServiceSkilaton />
@@ -45,9 +45,9 @@ const Services = ({ auth }) => {
                         <h2 className="mt-8 text-2xl font-bold">
                             Our Services
                         </h2>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                             {isLoading ? (
-                                <div className="flex items-center gap-2">
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
                                     <ServiceSkilaton />
                                 </div>
                             ) : isError ? (

@@ -29,7 +29,7 @@ class FileController extends Controller
         // Store the file with the custom name
         $filePath = $request->file('file')->storeAs('files', $customeFileName, 'public');
 
-        $service = File::create([
+        $file = File::create([
             'conversation_id' => $validatedData['conversation_id'],
             'file' => $filePath,
         ]);

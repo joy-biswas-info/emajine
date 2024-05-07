@@ -1,10 +1,13 @@
 import AdminLayout from '@/Layouts/AdminLayout';
-import Authenticated from '@/Layouts/AuthenticatedLayout';
 import { Link } from '@inertiajs/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
+import moment from 'moment';
+import { useEffect, useRef } from 'react';
+import { FaArrowAltCircleDown } from 'react-icons/fa';
 
 const AdminMessage = ({ auth, param }) => {
+    const scrollRef = useRef();
 
     const { isLoading: conversationIsLoading, isError: conversationIsError, data: conversationData } = useQuery({
         queryKey: ['conversations'],
@@ -43,51 +46,199 @@ const AdminMessage = ({ auth, param }) => {
 
     }
 
+     useEffect(() => {
+         scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
+     }, [data]);
 
     return (
         <AdminLayout user={auth.user}>
-            <div className='container mx-auto flex gap-12'>
+            <div className="container mx-auto flex gap-12">
                 <div className="usersContainer h-[550px] w-[350px] border p-1">
                     <div>
-                        {
-                            conversationIsLoading ? ("Loading...") : conversationIsError ? ("Something went wrong...") :
-                                conversationData.map(
-                                    (c) => (
-                                        <div key={c.id} className='my-5 border p-1'>
-                                            < Link href={`/admin/conversation/${c.id}`}>
-                                                <div className="imgContainer flex gap-2">
-                                                    <img src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/9f97425c956ae56494390f595019869a-1677484348332/2c3c5d65-e9dc-4e72-b01e-7ad54a5a8648.jpeg" alt="" className='w-6 h-6 rounded-full' />
-                                                    <h2 className=''>{c.recipient.name}</h2>
-                                                </div>
-                                                <p>{c.last_message}</p>
-                                            </Link>
-                                        </div>
-                                    ))}
+                        {conversationIsLoading
+                            ? "Loading..."
+                            : conversationIsError
+                            ? "Something went wrong..."
+                            : conversationData.map((c) => (
+                                  <div key={c.id} className="my-5 border p-1">
+                                      <Link
+                                          href={`/admin/conversation/${c.id}`}
+                                      >
+                                          <div className="imgContainer flex gap-2">
+                                              <img
+                                                  src={`/storage/${c.sender.profile_picture}`}
+                                                  alt=""
+                                                  className="w-6 h-6 rounded-full"
+                                              />
+                                              <h2 className="">
+                                                  {c.recipient.name}
+                                              </h2>
+                                          </div>
+                                          <p>{c.last_message}</p>
+                                      </Link>
+                                  </div>
+                              ))}
                     </div>
                 </div>
 
                 <div className="messagesContainer">
-                    {
-                        isLoading ? "Loading..." ? isError : "Something went wrong..." : <div className="messageContainer w-[720px] h-[550px] overflow-y-scroll"
-                        >
+                    {isLoading ? (
+                        "Loading..." ? (
+                            isError
+                        ) : (
+                            "Something went wrong..."
+                        )
+                    ) : (
+                        <div className="messageContainer w-[720px] h-[550px] overflow-y-scroll">
                             <div className="items my-4  flex flex-col gap-y-6">
                                 {data?.data
-                                    .sort((a, b) => new Date(a.created_at) - new Date(b.created_at)).map(
-                                        (m) => (<div className={parseFloat(m.from_id) === auth.user.id ? "item owner flex" : 'item flex '} key={m.id}>
+                                    .sort(
+                                        (a, b) =>
+                                            new Date(a.created_at) -
+                                            new Date(b.created_at)
+                                    )
+                                    .map((m, index) => (
+                                        <div key={m.id}>
+                                            <div
+                                                ref={scrollRef}
+                                                className={
+                                                    parseFloat(m.from_id) ===
+                                                    auth.user.id
+                                                        ? "item owner flex"
+                                                        : "item flex "
+                                                }
+                                                key={m.id}
+                                            >
+                                                <img
+                                                    src={
+                                                        parseFloat(
+                                                            m.from_id
+                                                        ) === auth.user.id
+                                                            ? 
+                                                                  `/storage/${auth.user.profile_picture}`
+                                                              
+                                                            : 
+                                                                  `/storage/${m.from_user.profile_picture}`
+                                                              
+                                                    }
+                                                    alt=""
+                                                    className="w-6 h-6 rounded-full"
+                                                />
+                                                {/* {console.log(
+                                                    m?.from_user.id,
+                                                    m?.to_user?.id
+                                                // )} */}
+                                                <div>
+                                                    <p className="max-w-[550px] p-2 rounded mx-1 my-1 message">
+                                                        {m.message}
+                                                    </p>
+                                                    {m.file &&
+                                                        m.file.length > 0 && (
+                                                            <>
+                                                                {typeof m
+                                                                    .file[0]
+                                                                    .file ===
+                                                                    "string" && (
+                                                                    <>
+                                                                        {[
+                                                                            "png",
+                                                                            "jpg",
+                                                                            "jpeg",
+                                                                        ].includes(
+                                                                            m.file[0].file
+                                                                                .split(
+                                                                                    "."
+                                                                                )
+                                                                                .pop()
+                                                                                .toLowerCase()
+                                                                        ) ? (
+                                                                            // Render image component
+                                                                            <div className="image-container">
+                                                                                <img
+                                                                                    className="h-24 w24"
+                                                                                    src={`/storage/${m.file[0].file}`}
+                                                                                    alt=""
+                                                                                />
+                                                                                <a
+                                                                                    className="download-link"
+                                                                                    href={`/storage/${m.file[0].file}`}
+                                                                                    download
+                                                                                >
+                                                                                    <FaArrowAltCircleDown />
+                                                                                </a>
+                                                                            </div>
+                                                                        ) : m.file[0].file
+                                                                              .split(
+                                                                                  "."
+                                                                              )
+                                                                              .pop()
+                                                                              .toLowerCase() ===
+                                                                          "mp4" ? (
+                                                                            // Render video component
+                                                                            <div>
+                                                                                <video
+                                                                                    className="h-24 w24"
+                                                                                    controls
+                                                                                >
+                                                                                    <source
+                                                                                        src={`/storage/${m.file[0].file}`}
+                                                                                        type="video/mp4"
+                                                                                    />
+                                                                                </video>
+                                                                                <a
+                                                                                    className="download-link"
+                                                                                    href={`/storage/${m.file[0].file}`}
+                                                                                    download
+                                                                                >
+                                                                                    <FaArrowAltCircleDown />
+                                                                                </a>
+                                                                            </div>
+                                                                        ) : (
+                                                                            // Render generic file link
+                                                                            <a
+                                                                                href={`/storage/${m.file[0].file}`}
+                                                                                target="_blank"
+                                                                                rel="noopener noreferrer"
+                                                                            >
+                                                                                {m.file[0].file
+                                                                                    .split(
+                                                                                        "/"
+                                                                                    )
+                                                                                    .pop()}
+                                                                                <FaArrowAltCircleDown />
+                                                                            </a>
+                                                                        )}
+                                                                    </>
+                                                                )}
+                                                            </>
+                                                        )}
 
-                                            <img src="https://fiverr-res.cloudinary.com/t_profile_original,q_auto,f_auto/attachments/profile/photo/9f97425c956ae56494390f595019869a-1677484348332/2c3c5d65-e9dc-4e72-b01e-7ad54a5a8648.jpeg" alt="" className='w-6 h-6 rounded-full' />
-                                            <p className='max-w-[550px]  p-2 rounded mx-1'>{m.message}</p>
-                                        </div>))}
+                                                    <p className=" bg-transparent time">
+                                                        {moment(
+                                                            m.created_at
+                                                        ).fromNow()}{" "}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
-
-                    }
-                    <form onSubmit={handleSubmit} className='flex flex-row'>
-                        <textarea type="text" name="message" id="" className='p-1 bg-gray-200 border-0 w-[80%]' />
-                        <input type="submit" value="Send" className='bg-blue-500 p-1 text-white cursor-pointer w-[20%]' />
+                    )}
+                    <form onSubmit={handleSubmit} className="flex flex-row">
+                        <textarea
+                            type="text"
+                            name="message"
+                            id=""
+                            className="p-1 bg-gray-200 border-0 w-[80%]"
+                        />
+                        <input
+                            type="submit"
+                            value="Send"
+                            className="bg-blue-500 p-1 text-white cursor-pointer w-[20%]"
+                        />
                     </form>
                 </div>
-
             </div>
         </AdminLayout>
     );

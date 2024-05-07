@@ -2,20 +2,51 @@ import ApplicationLogo from "@/Components/ApplicationLogo";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
 import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link } from "@inertiajs/react";
+import { Link, router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { FaEnvelope } from "react-icons/fa";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
         useState(false);
-    const { isLoading, isError, data } = useQuery({
-        queryKey: ["Conversation"],
-        queryFn: () =>
-            axios.get("/conversations").then((res) => {
+
+    const hasPlayedSound = useRef(false);
+
+    const {
+        isLoading: conversationIsLoading,
+        isError: conversationIsError,
+        data: conversationData,
+    } = useQuery({
+        queryKey: ["conversation"],
+        queryFn: async () => {
+            return axios.get("/conversation").then((res) => {
                 return res.data;
-            }),
+            });
+        },
+        refetchInterval: 1000,
     });
+
+    const handleClick = async () => {
+        const response = await axios.post("/update-conversations", {
+            conversation_id: conversationData.conversation[0].id,
+        });
+        router.visit("/message");
+    };
+
+    useEffect(() => {
+        if (
+            !conversationIsLoading &&
+            conversationData?.conversation?.[0]?.seen_by_user === 0 &&
+            !hasPlayedSound.current
+        ) {
+            hasPlayedSound.current = true;
+            const audioElement = new Audio("/sound.wav");
+            audioElement.play();
+
+        }
+
+    }, [conversationData, conversationIsLoading, hasPlayedSound]);
 
     return (
         <div className="min-h-screen bg-gray-100">
@@ -37,18 +68,7 @@ export default function Authenticated({ user, header, children }) {
                                     Dashboard
                                 </NavLink>
                             </div>
-                            {user.role === "User" && (
-                                <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                    {!isLoading && !isError && (
-                                        <NavLink
-                                            href={route("messages")}
-                                            active={route().current("messages")}
-                                        >
-                                            Messages
-                                        </NavLink>
-                                    )}
-                                </div>
-                            )}
+
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                                 <NavLink
                                     href={route("services")}
@@ -57,34 +77,6 @@ export default function Authenticated({ user, header, children }) {
                                     Services
                                 </NavLink>
                             </div>
-
-                            {user.role === "Admin" && (
-                                <>
-                                    <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route("admin.add.services")}
-                                            active={route().current(
-                                                "admin.add.services"
-                                            )}
-                                        >
-                                            Add Services
-                                        </NavLink>
-                                    </div>
-
-                                    <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                        <NavLink
-                                            href={route(
-                                                "admin.all.conversation"
-                                            )}
-                                            active={route().current(
-                                                "admin.all.conversation"
-                                            )}
-                                        >
-                                            All messages
-                                        </NavLink>
-                                    </div>
-                                </>
-                            )}
                         </div>
 
                         <div className="hidden sm:flex sm:items-center sm:ms-6">
@@ -115,11 +107,6 @@ export default function Authenticated({ user, header, children }) {
                                     </Dropdown.Trigger>
 
                                     <Dropdown.Content>
-                                        <Dropdown.Link
-                                            href={route("profile.edit")}
-                                        >
-                                            Profile
-                                        </Dropdown.Link>
                                         <Dropdown.Link
                                             href={route("logout")}
                                             method="post"
@@ -188,6 +175,12 @@ export default function Authenticated({ user, header, children }) {
                         >
                             Dashboard
                         </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            href={route("services")}
+                            active={route().current("services")}
+                        >
+                            Services
+                        </ResponsiveNavLink>
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200">
@@ -201,9 +194,6 @@ export default function Authenticated({ user, header, children }) {
                         </div>
 
                         <div className="mt-3 space-y-1">
-                            <ResponsiveNavLink href={route("profile.edit")}>
-                                Profile
-                            </ResponsiveNavLink>
                             <ResponsiveNavLink
                                 method="post"
                                 href={route("logout")}
@@ -216,16 +206,26 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            {/* {header && (
-                <header className="bg-white shadow">
-                    <div className="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                        {header}
-                    </div>
-                </header>
-            )} */}
-
-            <main className="container max-w-8xl mx-auto">
+            <main className="container px-2 mx-auto">
                 {children}
+
+                <div class="toast cursor-pointer" onClick={() => handleClick()}>
+                    {!conversationIsLoading &&
+                    conversationData.conversation[0].seen_by_user == 0 ? (
+                        <>
+                        <p className="rounded-full bg-red-500 text-white w-6 h-6 text-center">
+                            1
+                        </p>
+                        <audio ref={hasPlayedSound} onPlay={() => (hasPlayedSound.current = true)} src="/sound.wav" autoPlay />
+                        </>
+
+                    ) : null}
+                    <div className="alert alert-warning bg-center">
+                        <span>
+                            <FaEnvelope className="text-white" />
+                        </span>
+                    </div>
+                </div>
             </main>
         </div>
     );
