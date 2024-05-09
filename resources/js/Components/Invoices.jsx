@@ -20,13 +20,13 @@ const Invoices = () => {
                 <>
                     <h2 className="mt-5 text-2xl font-bold">Invoice to pay</h2>
                     {
-                        <table>
+                        <table className="w-full">
                             <thead>
                                 <tr className="bg-gray-200">
                                     <th className="py-2 px-4">No</th>
                                     <th className="py-2 px-4">Amount</th>
-                                    <th className="py-2 px-4">Paid</th>
-                                    <th className="py-2 px-4">Pay</th>
+                                    <th className="py-2 px-4">Status</th>
+                                    <th className="py-2 px-4">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -35,23 +35,23 @@ const Invoices = () => {
                                         key={invoice.invoice_id}
                                         className={
                                             index % 2 === 0
-                                                ? "bg-gray-100"
-                                                : "bg-white"
+                                                ? "bg-gray-100 text-center"
+                                                : "bg-white text-center"
                                         }
                                     >
                                         <td className="py-2 px-4">
                                             {index + 1}
                                         </td>
                                         <td className="py-2 px-4">
-                                            {invoice.amount_due}
+                                            {invoice.amount_due/100}
                                         </td>
                                         <td className="py-2 px-4">
-                                            {invoice.amount_paid}
+                                            {invoice.amount_paid/100}
                                         </td>
                                         <td className="py-2 px-4">
                                             {invoice.amount_due ==
                                             invoice.amount_paid ? (
-                                                <button className="bg-green-500 px-4 py-1 text-white">
+                                                <button className="bg-green-500 px-4 py-1 text-white disabled cursor-auto">
                                                     Paid
                                                 </button>
                                             ) : (

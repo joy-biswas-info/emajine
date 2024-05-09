@@ -79,9 +79,8 @@ class InvoiceController extends Controller
             'expire' => 30,
             'price' => $request->price,
             'url' => $sent['hosted_invoice_url'],
-            'service_id' => $product->id
         ]);
-        return response()->json('Invoice Created Successfully', 200);
+        return response()->json(['message' => 'Invoice Created Successfully'], 200);
     }
 
     public function index()
@@ -102,7 +101,31 @@ class InvoiceController extends Controller
             ];
         }
         ;
+        return response()->json($invoicesData, 200);
+    }
 
+    public function showAllInvoice()
+    {
+        return Inertia('Admin/Invoice/Invoices');
+
+    }
+    public function allInvoice()
+    {
+        Stripe::setApiKey(config('stripe.sk'));
+        $data = Invoice::with('customer')->get();
+        $invoicesData = [];
+        foreach ($data as $item) {
+            $invoice = StripeInvoice::retrieve($item->invoice_id);
+            $invoicesData[] = [
+                'invoice_id' => $invoice->id,
+                'amount_due' => $invoice->amount_due,
+                'amount_paid' => $invoice->amount_paid,
+                'status' => $invoice->status,
+                'url' => $invoice->hosted_invoice_url,
+                'customer' => $item->customer,
+            ];
+        }
+        ;
         return response()->json($invoicesData, 200);
     }
 }

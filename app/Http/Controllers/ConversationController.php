@@ -70,7 +70,10 @@ class ConversationController extends Controller
         $userId = Auth::user()->id;
         $conversation = Conversation::where('from_id', $userId)->get();
         return response()->json(['conversation' => $conversation]);
-
-
+    }
+    public function singleConversation($id)
+    {
+        $conversation = Conversation::where('from_id', $id)->with('sender')->get();
+        return response()->json($conversation, 200);
     }
 }

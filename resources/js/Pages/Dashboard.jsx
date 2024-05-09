@@ -20,12 +20,6 @@ export default function Dashboard({ auth }) {
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
             <div className="container mx-auto">
-                {/* Welcome  */}
-                {/* <div className="welcome pb-2 mt-6 border-black border-b-2">
-                    <h2 className="text-3xl font-bold">
-                        Hello, {auth.user.name}{" "}
-                    </h2>
-                </div> */}
                 <div className="w-48 mx-auto mt-10 ">
                     <img
                         src={`storage/${auth.user.profile_picture}`}
@@ -34,29 +28,22 @@ export default function Dashboard({ auth }) {
                     />
                     <p className="text-center">{auth.user.name}</p>
                     <Link href="/profile">
-
-                    <button className="btn btn-warning rounded-none mx-auto mt-4 w-48">Edit Profile <FaTools/> </button>
+                        <button className="btn btn-warning rounded-none mx-auto mt-4 w-48">
+                            Edit Profile <FaTools />{" "}
+                        </button>
                     </Link>
+                    <div className="my-6 mx-auto max-w-lg">
+                        <button
+                            onClick={() => handleMessage(1)}
+                            className="bg-black px-6 py-3 text-white cursor-pointer mx-auto w-48"
+                        >
+                            Message Now
+                        </button>
+                    </div>
                 </div>
 
-                    <Invoices />
-                    <Orders />
-
-                <div className="my-6 mx-auto max-w-lg">
-                    <Link
-                        href="/services"
-                        className="bg-black px-6 py-3 text-white"
-                    >
-                        Get A Service
-                    </Link>{" "}
-                    or{" "}
-                    <button
-                        onClick={() => handleMessage(1)}
-                        className="bg-black px-6 py-3 text-white cursor-pointer"
-                    >
-                        Message Now
-                    </button>
-                </div>
+                <Invoices />
+                <Orders />
             </div>
         </AuthenticatedLayout>
     );

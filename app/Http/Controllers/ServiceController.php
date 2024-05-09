@@ -22,7 +22,6 @@ class ServiceController extends Controller
         return response()->json($data, 200);
     }
 
-
     //! create services 
     public function create()
     {
@@ -32,7 +31,6 @@ class ServiceController extends Controller
     {
         return Inertia::render("Admin/Services/AllServices");
     }
-
 
     //! Store services 
     public function store(Request $request)
@@ -46,14 +44,10 @@ class ServiceController extends Controller
             'thumb' => 'required|image|mimes:jpeg,png,jpg,gif'
         ]);
 
-        // Get the current timestamp
         $timestamp = now()->timestamp;
-        // Generate a unique name for the thumbnail using the timestamp
         $customThumbName = $timestamp . '_' . 'emajine' . '.' . $request->file('thumb')->getClientOriginalExtension();
 
-        // Store the file with the custom name
         $thumbPath = $request->file('thumb')->storeAs('images', $customThumbName, 'public');
-        // Create a new resource using the model
 
         $service = Service::create([
             'title' => $validatedData['title'],
@@ -64,7 +58,16 @@ class ServiceController extends Controller
         ]);
 
         // Optionally, you can redirect to a success page or return a response
-        return response()->json('Successfully', 201);
+        return response()->json(['message' => 'Service added successfully'], 201);
+    }
+
+    public function destroy(Service $service)
+    {
+        if (!$service) {
+            return abort(404);
+        }
+        $service->delete();
+        return response()->json(['message' => 'Service deleted successfully'], 200);
     }
 
     public function single(Service $service)

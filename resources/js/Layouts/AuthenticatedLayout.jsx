@@ -27,11 +27,18 @@ export default function Authenticated({ user, header, children }) {
         refetchInterval: 1000,
     });
 
-    const handleClick = async () => {
-        const response = await axios.post("/update-conversations", {
-            conversation_id: conversationData.conversation[0].id,
-        });
-        router.visit("/message");
+    const handleClick = async (recepeant) => {
+        
+        await axios
+            .post("/create-conversations", {
+                recepeant: recepeant,
+            })
+            .then(() => {
+                router.visit("/message");
+            });
+            const response = await axios.post("/update-conversations", {
+                conversation_id: conversationData.conversation[0].id,
+            });
     };
 
     useEffect(() => {
@@ -50,7 +57,7 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-gray-300 border-b border-gray-100 py-2">
+            <nav className="bg-gray-400 border-b border-gray-200 py-2">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -209,9 +216,9 @@ export default function Authenticated({ user, header, children }) {
             <main className="container px-2 mx-auto">
                 {children}
 
-                <div class="toast cursor-pointer" onClick={() => handleClick()}>
+                <div class="toast cursor-pointer" onClick={() => handleClick(1)}>
                     {!conversationIsLoading &&
-                    conversationData.conversation[0].seen_by_user == 0 ? (
+                    conversationData.conversation[0]?.seen_by_user == 0 ? (
                         <>
                         <p className="rounded-full bg-red-500 text-white w-6 h-6 text-center">
                             1

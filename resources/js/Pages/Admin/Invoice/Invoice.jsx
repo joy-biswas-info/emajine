@@ -3,6 +3,8 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 const Invoice = ({auth,users}) => {
+      const [success, setSuccess] = useState(null);
+
     const [formData, setFormData] = useState({
         user_id: '',
         price: '',
@@ -18,20 +20,23 @@ const Invoice = ({auth,users}) => {
     }
     const handleSubmit=(e)=>{
         e.preventDefault();
-        axios.post('/admin/create-invoice',{
-            ...formData
-        }).then(
-            res=>console.log(res),
-            setFormData({user_id: '',
+        try {
+            const response = axios.post('/admin/create-invoice',{...formData});
+        setFormData({user_id: '',
             price: '',
             service: '',
-            currency:'cad',})
-        )
+            currency:'cad',
+        });
+        console.log(response);
+        setSuccess(response);
+        } catch (error) {
+            console.log(error);
+        }
       
     }
     
     return (
-        <AdminLayout user={auth.user}>
+        <AdminLayout user={auth.user} success={success}>
             <Head title='Send Invoice'/>
             <div className="max-w-5xl  bg-white p-8 mt-10 rounded">
                 <h2 className="text-3xl mb-4 text-black font-bold">

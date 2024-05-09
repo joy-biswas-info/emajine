@@ -20,7 +20,6 @@ class OrderController extends Controller
         } catch (\Throwable $th) {
             return response()->json('An error occured:' . $th->getMessage());
         }
-
     }
     public function orderAdmin()
     {

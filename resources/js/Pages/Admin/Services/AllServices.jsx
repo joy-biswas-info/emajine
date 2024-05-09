@@ -1,6 +1,6 @@
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Link } from '@inertiajs/react';
-import { useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const AllServices = () => {
     const { isLoading, isError, data } = useQuery({
@@ -11,6 +11,21 @@ const AllServices = () => {
             });
         },
     });
+        const queryClient = useQueryClient();
+        const mutation = useMutation({
+            mutationFn: (serviceId) => {
+                return axios.delete(`/admin/service/delete/${serviceId}`);
+            },
+            onSuccess: () => {
+                queryClient.invalidateQueries(["Services"]);
+            },
+        });
+
+const handleDeleteService = async (serviceId) => {
+  mutation.mutate(serviceId)
+};
+
+
     return (
         <AdminLayout>
             <h2 className="text-3xl bold text-gray-700">All Services</h2>
@@ -18,11 +33,9 @@ const AllServices = () => {
                 <table className="table">
                     <thead>
                         <tr>
-                        
                             <th>Name</th>
                             <th>Status</th>
                             <th>Action</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -32,9 +45,7 @@ const AllServices = () => {
                             </tr>
                         ) : isError ? (
                             <tr className="con-span-2">
-                                <td colSpan={3}>
-                                    Something went wrong...
-                                </td>
+                                <td colSpan={3}>Something went wrong...</td>
                             </tr>
                         ) : (
                             data.map((service) => (
@@ -59,19 +70,24 @@ const AllServices = () => {
                                             </div>
                                         </div>
                                     </td>
-                                    <td>
-                                        Published
-                                    </td>
+                                    <td>Published</td>
                                     <th>
-                                        <button className="btn btn-warning btn-xs">
+                                        <button
+                                            className="btn btn-warning btn-xs"
+                                            onClick={() =>
+                                                handleDeleteService(service.id)
+                                            }
+                                        >
                                             Delete
                                         </button>
                                     </th>
                                     <th>
                                         <button className="btn btn-danger btn-xs">
-                                            <Link href={`/admin/edit-service/${service.id}`}>Edit
+                                            <Link
+                                                href={`/admin/edit-service/${service.id}`}
+                                            >
+                                                Edit
                                             </Link>
-                                            
                                         </button>
                                     </th>
                                 </tr>

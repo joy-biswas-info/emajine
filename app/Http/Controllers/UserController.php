@@ -24,10 +24,9 @@ class UserController extends Controller
 
     }
 
-
-    public function store()
+    public function dashboard()
     {
-
+        return Inertia::render('Admin/AdminDashBoard');
     }
 
 }

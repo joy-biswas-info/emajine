@@ -55,6 +55,7 @@ class StripeController extends Controller
         $serviceId = $request->query('service_id');
         $service = Service::find($serviceId);
         $sessionId = $request->query('session_id');
+        
         if ($service) {
             $session = \Stripe\Checkout\Session::retrieve($sessionId, []);
             if ($session->payment_status === 'paid') {

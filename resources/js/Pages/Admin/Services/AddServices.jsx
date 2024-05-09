@@ -3,6 +3,15 @@ import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
 const CreateService = ({auth}) => {
+  const [success,setSuccess] = useState(null);
+   const [errors, setErrors] = useState({
+       title: "",
+       short_description: "",
+       description: "",
+       price: "",
+       thumb: "",
+   });
+
     const [formData, setFormData] = useState({
         title: '',
         short_description: '',
@@ -41,7 +50,6 @@ const CreateService = ({auth}) => {
     
       const handleChange = (e) => {
         const { name, type } = e.target;
-    
         if (type === 'file') {
           handleFileChange(name, e.target.files);
         } else {
@@ -51,13 +59,11 @@ const CreateService = ({auth}) => {
     
       const handleSubmit = async (e) => {
         e.preventDefault();
-    
+        setSuccess(null);
         const formDataToSend = new FormData();
-    
         for (const key in formData) {
           formDataToSend.append(key, formData[key]);
         }
-    
         try {
           const response = await axios.post('/admin/add-services', formDataToSend);
           setFormData({
@@ -68,17 +74,20 @@ const CreateService = ({auth}) => {
               thumb: null,
               thumb_preview: null,
           });
-          
+          setSuccess(response)
         } catch (error) {
-          console.error('Error sending form data:', error);
+          const { data } = error.response;
+          setErrors(data.errors);
         }
       };
 
     return (
-        <AdminLayout user={auth.user}>
-<Head title='Add Service'></Head>
+        <AdminLayout user={auth.user} success={success}>
+            <Head title="Add Service"></Head>
             <div className="">
-                <h2 className="text-3xl mb-4 text-black font-bold">Add a service</h2>
+                <h2 className="text-3xl mb-4 text-black font-bold">
+                    Add service
+                </h2>
             </div>
             <form
                 onSubmit={handleSubmit}
@@ -93,6 +102,11 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="form-input mt-1 block w-full border"
                     />
+                    {errors.title && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.title}
+                        </p>
+                    )}
                 </label>
 
                 <label className="block mb-4">
@@ -106,6 +120,11 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="form-input mt-1 block w-full"
                     ></textarea>
+                    {errors.short_description && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.short_description}
+                        </p>
+                    )}
                 </label>
 
                 <label className="block mb-4">
@@ -119,17 +138,27 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="form-input mt-1 block w-full"
                     ></textarea>
+                    {errors.description && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.description}
+                        </p>
+                    )}
                 </label>
 
                 <label className="block mb-4">
                     <span className="text-gray-700">Price</span>
                     <input
-                        type="text"
+                        type="number"
                         name="price"
                         value={formData.price}
                         onChange={handleChange}
                         className="form-input mt-1 block w-full"
                     />
+                    {errors.price && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.price}
+                        </p>
+                    )}
                 </label>
 
                 <label
@@ -154,12 +183,14 @@ const CreateService = ({auth}) => {
                     <p className="text-sm text-gray-500">
                         Drag & Drop or Choose File
                     </p>
+                    {errors.thumb && (
+                        <p className="text-red-500 text-sm mt-1">
+                            {errors.thumb}
+                        </p>
+                    )}
                 </label>
 
-                <button
-                    type="submit"
-                    className="btn btn-primary w-full"
-                >
+                <button type="submit" className="btn btn-primary w-full">
                     Submit
                 </button>
             </form>

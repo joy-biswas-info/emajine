@@ -77,13 +77,15 @@ const Messages = ({ auth }) => {
                         <p>Emajine </p>
                     </div>
                     {isLoading ? (
-                        "Loading..." ? (
+                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll">
+                            loading
+                        </div> ? (
                             isError
                         ) : (
                             "Something went wrong..."
                         )
                     ) : (
-                        <div className="messageContainer w-[460px} h-100  md:w-[520px] overflow-y-scroll">
+                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll">
                             {data?.data
                                 .sort(
                                     (a, b) =>
@@ -97,24 +99,28 @@ const Messages = ({ auth }) => {
                                             className={
                                                 parseFloat(m.from_id) ===
                                                 auth.user.id
-                                                    ? "item owner flex"
-                                                    : "item flex "
+                                                    ? "item owner flex chat-end"
+                                                    : "item flex chat-start"
                                             }
                                             key={m.id}
                                         >
-                                            <img
-                                                src={
-                                                    parseFloat(m.from_id) ===
-                                                    auth.user.id
-                                                        ? `/storage/${auth.user.profile_picture}`
-                                                        : `/storage/${m.from_user.profile_picture}`
-                                                }
-                                                alt=""
-                                                className="w-6 h-6 rounded-full"
-                                            />
-                                            
+                                            <div className="chat-image avatar">
+                                                <div className="w-10 rounded-full">
+                                                    <img
+                                                        src={
+                                                            parseFloat(
+                                                                m.from_id
+                                                            ) === auth.user.id
+                                                                ? `/storage/${auth.user.profile_picture}`
+                                                                : `/storage/${m.from_user.profile_picture}`
+                                                        }
+                                                        alt=""
+                                                    />
+                                                </div>
+                                            </div>
+
                                             <div>
-                                                <p className="max-w-[550px] p-2 rounded mx-1 my-1 message">
+                                                <p className="max-w-[550px] p-2 rounded mx-1 my-1 message chat-bubble">
                                                     {m.message}
                                                 </p>
                                                 {m.file &&
