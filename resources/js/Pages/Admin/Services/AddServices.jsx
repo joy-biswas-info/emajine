@@ -1,85 +1,94 @@
+import ServiceDescriptionEditor from '@/Components/ServiceDescriptionEditor';
+import ServiceShortDescriptionEditor from '@/Components/ServiceShortDescriptionEditor';
 import AdminLayout from '@/Layouts/AdminLayout';
 import { Head } from '@inertiajs/react';
 import { useState } from 'react';
 
-const CreateService = ({auth}) => {
-  const [success,setSuccess] = useState(null);
-   const [errors, setErrors] = useState({
-       title: "",
-       short_description: "",
-       description: "",
-       price: "",
-       thumb: "",
-   });
+const CreateService = ({ auth }) => {
+      const [description, setDescription] = useState("");
+      const [ShortDescription, setShortDescription] = useState("");
+
+    const [success, setSuccess] = useState(null);
+    const [errors, setErrors] = useState({
+        title: "",
+        short_description: "",
+        description: "",
+        price: "",
+        thumb: "",
+    });
 
     const [formData, setFormData] = useState({
-        title: '',
-        short_description: '',
-        description: '',
-        price: '',
+        title: "",
+        short_description: "",
+        description: "",
+        price: "",
         thumb: null,
         thumb_preview: null,
-      });
-    
-      const handleFileChange = (name, files) => {
+    });
+
+    const handleFileChange = (name, files) => {
         const file = files[0];
         const reader = new FileReader();
-    
+
         reader.onloadend = () => {
-          setFormData({
-            ...formData,
-            [name]: file,
-            [`${name}_preview`]: reader.result
-          });
+            setFormData({
+                ...formData,
+                [name]: file,
+                [`${name}_preview`]: reader.result,
+            });
         };
-    
+
         if (file) {
-          reader.readAsDataURL(file);
+            reader.readAsDataURL(file);
         }
-      };
-    
-      const handleDragOver = (e) => {
+    };
+
+    const handleDragOver = (e) => {
         e.preventDefault();
-      };
-    
-      const handleDrop = (e, name) => {
+    };
+
+    const handleDrop = (e, name) => {
         e.preventDefault();
         const files = e.dataTransfer.files;
         handleFileChange(name, files);
-      };
-    
-      const handleChange = (e) => {
+    };
+
+    const handleChange = (e) => {
         const { name, type } = e.target;
-        if (type === 'file') {
-          handleFileChange(name, e.target.files);
+        if (type === "file") {
+            handleFileChange(name, e.target.files);
         } else {
-          setFormData({ ...formData, [name]: e.target.value });
+            setFormData({ ...formData, [name]: e.target.value });
         }
-      };
-    
-      const handleSubmit = async (e) => {
+    };
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
         setSuccess(null);
         const formDataToSend = new FormData();
         for (const key in formData) {
-          formDataToSend.append(key, formData[key]);
+            formDataToSend.append(key, formData[key]);
         }
+            formDataToSend.append("description", description);
         try {
-          const response = await axios.post('/admin/add-services',formDataToSend);
-          setFormData({
-              title: "",
-              short_description: "",
-              description: "",
-              price: "",
-              thumb: null,
-              thumb_preview: null,
-          });
-          setSuccess(response)
+            const response = await axios.post(
+                "/admin/add-services",
+                formDataToSend
+            );
+            setFormData({
+                title: "",
+                short_description: "",
+                description: "",
+                price: "",
+                thumb: null,
+                thumb_preview: null,
+            });
+            setSuccess(response);
         } catch (error) {
-          const { data } = error.response;
-          setErrors(data.errors);
+            const { data } = error.response;
+            setErrors(data.errors);
         }
-      };
+    };
 
     return (
         <AdminLayout user={auth.user} success={success}>
@@ -102,7 +111,7 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="form-input mt-1 block w-full border"
                     />
-                    {errors.title && (
+                    {errors?.title && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.title}
                         </p>
@@ -111,16 +120,11 @@ const CreateService = ({auth}) => {
 
                 <label className="block mb-4">
                     <span className="text-gray-700">Short Description</span>
-                    <textarea
-                        name="short_description"
-                        id=""
-                        cols="30"
-                        rows="5"
-                        value={formData.short_description}
-                        onChange={handleChange}
-                        className="form-input mt-1 block w-full"
-                    ></textarea>
-                    {errors.short_description && (
+                    <ServiceShortDescriptionEditor
+                        shortDescription={ShortDescription}
+                        setShortDescription={setShortDescription}
+                    />
+                    {errors?.short_description && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.short_description}
                         </p>
@@ -129,16 +133,11 @@ const CreateService = ({auth}) => {
 
                 <label className="block mb-4">
                     <span className="text-gray-700">Description</span>
-                    <textarea
-                        name="description"
-                        id=""
-                        cols="30"
-                        rows="10"
-                        value={formData.description}
-                        onChange={handleChange}
-                        className="form-input mt-1 block w-full"
-                    ></textarea>
-                    {errors.description && (
+                    <ServiceDescriptionEditor
+                        description={description}
+                        setDescription={setDescription}
+                    />
+                    {errors?.description && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.description}
                         </p>
@@ -154,7 +153,7 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="form-input mt-1 block w-full"
                     />
-                    {errors.price && (
+                    {errors?.price && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.price}
                         </p>
@@ -173,7 +172,7 @@ const CreateService = ({auth}) => {
                         onChange={handleChange}
                         className="hidden"
                     />
-                    {formData.thumb_preview && (
+                    {formData?.thumb_preview && (
                         <img
                             src={formData.thumb_preview}
                             alt="Thumb Preview"
@@ -183,13 +182,12 @@ const CreateService = ({auth}) => {
                     <p className="text-sm text-gray-500">
                         Drag & Drop or Choose File
                     </p>
-                    {errors.thumb && (
+                    {errors?.thumb && (
                         <p className="text-red-500 text-sm mt-1">
                             {errors.thumb}
                         </p>
                     )}
                 </label>
-
                 <button type="submit" className="btn btn-primary w-full">
                     Submit
                 </button>

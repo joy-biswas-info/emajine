@@ -17,9 +17,9 @@ const ServiceCard = ({ service }) => {
                         {service.title}
                     </div>
                 </Link>
-                <p className="text-gray-700 text-base">
+                <div className="text-gray-700 text-base">
                     {service.short_description}
-                </p>
+                </div>
             <p className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-4">
                 CAD {service.price}
             </p>

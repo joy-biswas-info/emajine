@@ -1,5 +1,5 @@
 import AdminLayout from '@/Layouts/AdminLayout';
-import { Link } from '@inertiajs/react';
+import { Head, Link } from '@inertiajs/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 const AllServices = () => {
@@ -28,6 +28,7 @@ const handleDeleteService = async (serviceId) => {
 
     return (
         <AdminLayout>
+            <Head title='All Service'/>
             <h2 className="text-3xl bold text-gray-700">All Services</h2>
             <div>
                 <table className="table">

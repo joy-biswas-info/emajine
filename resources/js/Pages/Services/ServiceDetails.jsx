@@ -83,40 +83,55 @@ const ServiceDetails = ({ auth }) => {
                             "Something went wrong"
                         ) : (
                             <>
-                                <div className="flex flex-row gap-2">
+                                <div className="grid md:grid-cols-2 gap-8">
                                     <img
                                         src={`/storage/${data.thumb}`}
                                         alt=""
-                                        className="w-72"
+                                        className="w-full"
                                     />
                                     <div className="flex flex-col">
-                                        <h2 className="text-2xl font-bold">
+                                        <h2 className="text-xl md:text-2xl font-bold my-4">
                                             {data.title}
                                         </h2>
-                                        <p>{data.short_description}</p>
-                                        <p className="inline-block w-24 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 my-4">
-                                            CAD {data.price}
-                                        </p> 
-                                        <form action="/session" method="POST">
-                                            <input
-                                                type="hidden"
-                                                name="service_id"
-                                                value={data.id}
-                                            />
-                                            <button
-                                                type="submit"
-                                                id="checkout-live-button"
-                                                className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: data.short_description,
+                                            }}
+                                            className="my-4"
+                                        />
+                                        <div className="flex items-center gap-3">
+                                            <p className="inline-block w-24 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 my-4">
+                                                CAD {data.price}
+                                            </p>
+                                            <form
+                                                action="/session"
+                                                method="POST"
                                             >
-                                                Buy Now
-                                            </button>
-                                        </form>
+                                                <input
+                                                    type="hidden"
+                                                    name="service_id"
+                                                    value={data.id}
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    id="checkout-live-button"
+                                                    className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                                                >
+                                                    Buy Now
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                                <h2 className="text-2xl font-bold">
+                                <h2 className="text-2xl font-bold my-6 md:my-8 py-2 border-b-2 border-b-stone-700">
                                     Description
                                 </h2>
-                                <p>{data.description}</p>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: data.description,
+                                    }}
+                                    className="my-4"
+                                />
                                 <div className="mt-12 mb-2">
                                     {reviewIsLoading ? (
                                         "loading"
