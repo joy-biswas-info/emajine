@@ -25,10 +25,11 @@ export default function Authenticated({ user, header, children }) {
             });
         },
         refetchInterval: 1000,
+        refetchIntervalInBackground:true,
+        refetchOnMount:true,
     });
 
     const handleClick = async (recepeant) => {
-        
         await axios
             .post("/create-conversations", {
                 recepeant: recepeant,
@@ -36,9 +37,9 @@ export default function Authenticated({ user, header, children }) {
             .then(() => {
                 router.visit("/message");
             });
-            const response = await axios.post("/update-conversations", {
-                conversation_id: conversationData.conversation[0].id,
-            });
+        const response = await axios.post("/update-conversations", {
+            conversation_id: conversationData.conversation[0].id,
+        });
     };
 
     useEffect(() => {
@@ -50,14 +51,17 @@ export default function Authenticated({ user, header, children }) {
             hasPlayedSound.current = true;
             const audioElement = new Audio("/sound.wav");
             audioElement.play();
-
         }
-
     }, [conversationData, conversationIsLoading, hasPlayedSound]);
+    const handleSound =async () => {
+        const response = await axios.post("/update-conversations", {
+            conversation_id: conversationData.conversation[0].id,
+        });
+    };
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-gray-400 border-b border-gray-200 py-2">
+            <nav className="bg-gray-600 border-b border-gray-200 py-2">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -93,7 +97,7 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-200 bg-white hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
 
@@ -216,20 +220,31 @@ export default function Authenticated({ user, header, children }) {
             <main className="container px-2 mx-auto">
                 {children}
 
-                <div class="toast cursor-pointer" onClick={() => handleClick(1)}>
+                <div
+                    class="toast cursor-pointer"
+                    onClick={() => handleClick(1)}
+                >
                     {!conversationIsLoading &&
-                    conversationData.conversation[0]?.seen_by_user == 0 ? (
+                    conversationData.conversation[0]?.seen_by_user == 0 && (
                         <>
-                        <p className="rounded-full bg-red-500 text-white w-6 h-6 text-center">
-                            1
-                        </p>
-                        <audio ref={hasPlayedSound} onPlay={() => (hasPlayedSound.current = true)} src="/sound.wav" autoPlay />
+                            <p className="rounded-full bg-red-500 text-white w-6 h-6 text-center">
+                                1
+                            </p>
+                            <audio
+                                ref={hasPlayedSound}
+                                onPlay={() => (hasPlayedSound.current = true)}
+                                src="/sound.wav"
+                                autoPlay
+                            />
                         </>
-
-                    ) : null}
+                    )}
+                    
                     <div className="alert alert-warning bg-center">
                         <span>
-                            <FaEnvelope className="text-white" />
+                            <FaEnvelope
+                                className="text-white"
+                                onClick={() => handleSound()}
+                            />
                         </span>
                     </div>
                 </div>

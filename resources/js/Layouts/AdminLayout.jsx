@@ -46,6 +46,7 @@ export default function AdminLayout({ admin, header, children,err,success }) {
                     </div>
                 )}
                 {children}
+                
             </main>
         </div>
     );

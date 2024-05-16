@@ -130,7 +130,7 @@ const ServiceDetails = ({ auth }) => {
                                     dangerouslySetInnerHTML={{
                                         __html: data.description,
                                     }}
-                                    className="my-4"
+                                    className="my-4 max-w-xl"
                                 />
                                 <div className="mt-12 mb-2">
                                     {reviewIsLoading ? (
@@ -244,45 +244,62 @@ const ServiceDetails = ({ auth }) => {
                 <Guest>
                     <Head title="Service Details" />
 
-                    <div className="container mx-auto px-12 md:px-48 mt-12">
+ <div className="container mx-auto px-12 md:px-48 mt-12">
                         {isLoading ? (
                             "Loading"
                         ) : isError ? (
                             "Something went wrong"
                         ) : (
                             <>
-                                <div className="flex flex-row gap-2">
+                                <div className="grid md:grid-cols-2 gap-8">
                                     <img
                                         src={`/storage/${data.thumb}`}
                                         alt=""
-                                        className="w-72"
+                                        className="w-full"
                                     />
                                     <div className="flex flex-col">
-                                        <h2 className="text-2xl font-bold">
+                                        <h2 className="text-xl md:text-2xl font-bold my-4">
                                             {data.title}
                                         </h2>
-                                        <p>{data.short_description}</p>
-                                        <p>${data.price} CAD</p>
-                                        <form action="/session" method="POST">
-                                            <input
-                                                type="hidden"
-                                                name="service_id"
-                                                value={data.id}
-                                            />
-                                            <button
-                                                type="submit"
-                                                id="checkout-live-button"
-                                                className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                                        <div
+                                            dangerouslySetInnerHTML={{
+                                                __html: data.short_description,
+                                            }}
+                                            className="my-4"
+                                        />
+                                        <div className="flex items-center gap-3">
+                                            <p className="inline-block w-24 bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 my-4">
+                                                CAD {data.price}
+                                            </p>
+                                            <form
+                                                action="/session"
+                                                method="POST"
                                             >
-                                                Buy Now
-                                            </button>
-                                        </form>
+                                                <input
+                                                    type="hidden"
+                                                    name="service_id"
+                                                    value={data.id}
+                                                />
+                                                <button
+                                                    type="submit"
+                                                    id="checkout-live-button"
+                                                    className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                                                >
+                                                    Buy Now
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
-                                <h2 className="text-2xl font-bold">
+                                <h2 className="text-2xl font-bold my-6 md:my-8 py-2 border-b-2 border-b-stone-700">
                                     Description
                                 </h2>
-                                <p>{data.description}</p>
+                                <div
+                                    dangerouslySetInnerHTML={{
+                                        __html: data.description,
+                                    }}
+                                    className="my-4 max-w-xl"
+                                />
                                 <div className="mt-12 mb-2">
                                     {reviewIsLoading ? (
                                         "loading"
@@ -303,81 +320,7 @@ const ServiceDetails = ({ auth }) => {
                                             ))}
                                         </>
                                     ) : null}
-                                    {/* <form onSubmit={handleSubmit} className="mt-24">
-                                <p className="hidden">
-                                    {" "}
-                                    {(reviewData.service_id = data.id)}
-                                </p>
-                                <div className="mb-4">
-                                    <label
-                                        className="block text-gray-700 text-sm font-bold mb-2"
-                                        htmlFor="review"
-                                    >
-                                        Write your Review
-                                    </label>
-                                    <textarea
-                                        id="review"
-                                        name="review"
-                                        required
-                                        value={reviewData.review}
-                                        onChange={handleChange}
-                                        className="border rounded-md px-4 py-2 w-full"
-                                        rows="4"
-                                        placeholder="Enter your review..."
-                                    />
-                                </div>
-                                <div className="">
-                                <label
-                                        className="block text-gray-700 text-sm font-bold mb-2"
-                                        htmlFor="review"
-                                    >
-                                        Your rating
-                                    </label> 
-                                    <div className="flex my-1"> 
-                                    {[...Array(5)].map((star, index) => {
-                                        const ratingValue = index + 1;
-                                        return (
-                                            <label
-                                                key={index}
-                                                className="cursor-pointer"
-                                            >
-                                                <input
-                                                    className="hidden"
-                                                    type="radio"
-                                                    name="rating"
-                                                    value={ratingValue}
-                                                    onChange={() =>
-                                                        handleRatingChange(
-                                                            ratingValue
-                                                        )
-                                                    }
-                                                />
-                                                <FaStar
-                                                    className="text-yellow-500"
-                                                    size={25}
-                                                    style={{
-                                                        marginRight: "5px",
-                                                    }}
-                                                    color={
-                                                        ratingValue <=
-                                                        reviewData.rating
-                                                            ? "#FFD700"
-                                                            : "#D1D5DB"
-                                                    }
-                                                />
-                                            </label>
-                                        );
-                                    })}
-                                    </div>
                                     
-                                </div>
-                                <button
-                                    type="submit"
-                                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                                >
-                                    Submit
-                                </button>
-                            </form> */}
                                 </div>
                             </>
                         )}

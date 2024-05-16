@@ -1,12 +1,12 @@
-import ServiceDescriptionEditor from '@/Components/ServiceDescriptionEditor';
-import ServiceShortDescriptionEditor from '@/Components/ServiceShortDescriptionEditor';
-import AdminLayout from '@/Layouts/AdminLayout';
-import { Head } from '@inertiajs/react';
-import { useState } from 'react';
+import ServiceDescriptionEditor from "@/Components/ServiceDescriptionEditor";
+import ServiceShortDescriptionEditor from "@/Components/ServiceShortDescriptionEditor";
+import AdminLayout from "@/Layouts/AdminLayout";
+import { Head } from "@inertiajs/react";
+import { useState } from "react";
 
 const CreateService = ({ auth }) => {
-      const [description, setDescription] = useState("");
-      const [shortDescription, setShortDescription] = useState("");
+    const [description, setDescription] = useState("");
+    const [shortDescription, setShortDescription] = useState("");
 
     const [success, setSuccess] = useState(null);
     const [errors, setErrors] = useState({
@@ -69,8 +69,8 @@ const CreateService = ({ auth }) => {
         for (const key in formData) {
             formDataToSend.append(key, formData[key]);
         }
-            formDataToSend.append("description", description);
-            formDataToSend.append("short_description", shortDescription);
+        formDataToSend.append("description", description);
+        formDataToSend.append("short_description", shortDescription);
         try {
             const response = await axios.post(
                 "/admin/add-services",
@@ -78,12 +78,12 @@ const CreateService = ({ auth }) => {
             );
             setFormData({
                 title: "",
-                short_description: "",
-                description: "",
                 price: "",
                 thumb: null,
                 thumb_preview: null,
             });
+            shortDescription = "";
+            description = "";
             setSuccess(response);
         } catch (error) {
             const { data } = error.response;
@@ -96,7 +96,7 @@ const CreateService = ({ auth }) => {
             <Head title="Add Service"></Head>
             <div className="">
                 <h2 className="text-3xl mb-4 text-black font-bold">
-                    Add service
+                    Add service a service
                 </h2>
             </div>
             <form

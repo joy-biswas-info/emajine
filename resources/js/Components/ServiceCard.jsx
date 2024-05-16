@@ -17,12 +17,15 @@ const ServiceCard = ({ service }) => {
                         {service.title}
                     </div>
                 </Link>
-                <div className="text-gray-700 text-base">
-                    {service.short_description}
-                </div>
-            <p className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-4">
-                CAD {service.price}
-            </p>
+                <div
+                    dangerouslySetInnerHTML={{
+                        __html: service.short_description,
+                    }}
+                    className="my-4"
+                />
+                <p className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2 mt-4">
+                    CAD {service.price}
+                </p>
             </div>
             <div className="px-6 py-2 flex">
                 <form action="/session" method="POST">
