@@ -3,7 +3,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 
 const AdminSidebar = () => {
     return (
-        <div className="flex flex-col mx-auto py-12 ps-12 border-r-2 min-h-[100vh] bg-gray-800">
+        <div className="flex flex-col mx-auto py-12 ps-12 border-r-2 min-h-[100vh] bg-black">
             <ul className="menu menu-horizontal">
                 <li>
                     <AdminNavLink
@@ -95,6 +95,15 @@ const AdminSidebar = () => {
                     </details>
                 </li>
                 <li>
+                    <AdminNavLink
+                        href={route("admin.orders")}
+                        active={route().current("admin.orders")}
+                        className="my-2"
+                    >
+                        Orders
+                    </AdminNavLink>
+                </li>
+                <li className="mt-24">
                     <AdminNavLink
                         method="post"
                         href={route("logout")}

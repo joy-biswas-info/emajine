@@ -47,7 +47,7 @@ const Conversation = ({ auth }) => {
                                                   className="w-6 h-6 rounded-full"
                                               />
                                               <h2 className={"font-bold"}>
-                                                  {c.recipient?.name}
+                                                  {c.sender?.name}
                                               </h2>
                                           </div>
                                           <p

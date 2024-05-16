@@ -15,6 +15,9 @@ use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
 
+Route::get('/', function () {
+    return Inertia::render('Welcome');
+});
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -42,8 +45,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/single-service/{service}', [ServiceController::class, 'getSingleService'])->name('single.services');
     Route::get('/checkout', [StripeController::class, 'checkout'])->name('checkout');
     Route::post('/session', [StripeController::class, 'session'])->name('session');
-    Route::get('/success', [StripeController::class, 'success'])->name('success');
-    Route::get('/payment-success', [StripeController::class, 'paymentSuccess'])->name('payment_success');
+
+
     // Order Route 
     Route::get('/orders', [OrderController::class, 'index']);
 
@@ -52,14 +55,14 @@ Route::middleware('auth')->group(function () {
     // Review 
     Route::post('/add-review', [ReviewController::class, 'store']);
 });
+Route::get('/success', [StripeController::class, 'success'])->name('success');
+Route::get('/payment-success', [StripeController::class, 'paymentSuccess'])->name('payment_success');
 
 Route::get('/reviews/{serviceId}', [ReviewController::class, 'index']);
-Route::get('/', [ServiceController::class, 'show'])->name('services');
 Route::get('/services', [ServiceController::class, 'show'])->name('services');
 Route::get('/all-services', [ServiceController::class, 'index'])->name('all.services');
 Route::get('/single/{service}', [ServiceController::class, 'single'])->name('single.services');
 Route::get('/single-service/{service}', [ServiceController::class, 'getSingleService'])->name('single.services');
-
 
 
 

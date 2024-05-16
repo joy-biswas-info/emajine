@@ -6,6 +6,7 @@ import { Link, router } from "@inertiajs/react";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useRef, useState } from "react";
 import { FaEnvelope } from "react-icons/fa";
+import Footer from "./Footer";
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] =
@@ -61,7 +62,7 @@ export default function Authenticated({ user, header, children }) {
 
     return (
         <div className="min-h-screen bg-gray-100">
-            <nav className="bg-gray-600 border-b border-gray-200 py-2">
+            <nav className="bg-black border-b border-gray-200 py-2">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">
                         <div className="flex">
@@ -97,7 +98,7 @@ export default function Authenticated({ user, header, children }) {
                                         <span className="inline-flex rounded-md">
                                             <button
                                                 type="button"
-                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-200 bg-white hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
+                                                className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black bg-white hover:text-gray-600 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
 
@@ -217,7 +218,7 @@ export default function Authenticated({ user, header, children }) {
                 </div>
             </nav>
 
-            <main className="container px-2 mx-auto">
+            <main className="">
                 {children}
 
                 <div
@@ -225,7 +226,7 @@ export default function Authenticated({ user, header, children }) {
                     onClick={() => handleClick(1)}
                 >
                     {!conversationIsLoading &&
-                    conversationData.conversation[0]?.seen_by_user == 0 && (
+                    conversationData?.conversation[0]?.seen_by_user == 0 && (
                         <>
                             <p className="rounded-full bg-red-500 text-white w-6 h-6 text-center">
                                 1
@@ -249,6 +250,7 @@ export default function Authenticated({ user, header, children }) {
                     </div>
                 </div>
             </main>
+            <Footer/>
         </div>
     );
 }

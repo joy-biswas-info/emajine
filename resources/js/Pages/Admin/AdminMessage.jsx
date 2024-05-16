@@ -92,7 +92,7 @@ const AdminMessage = ({ auth, param }) => {
                                                   className="w-6 h-6 rounded-full"
                                               />
                                               <h2 className="">
-                                                  {c.recipient.name}
+                                                  {c?.sender?.name}
                                               </h2>
                                           </div>
                                           <p>{c.last_message}</p>

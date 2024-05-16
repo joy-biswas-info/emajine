@@ -2,15 +2,16 @@ import { Link } from "@inertiajs/react";
 
 const ServiceCard = ({ service }) => {
 
-
-
     return (
         <div className=" mx-auto  shadow-lg">
+                            <Link href={`/single/${service.id}`}>
+
             <img
                 className="max-w-full object-contain"
                 src={`/storage/${service.thumb}`}
                 alt="Service Thumbnail"
             />
+            </Link>
             <div className="px-6 py-4">
                 <Link href={`/single/${service.id}`}>
                     <div className="font-bold text-xl mb-2">

@@ -6,6 +6,7 @@ use App\Models\Order;
 use App\Models\Service;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 use Inertia\Inertia;
 use Stripe\Stripe;
 use Stripe\StripeClient;
@@ -30,7 +31,7 @@ class StripeController extends Controller
                         'currency' => 'CAD',
                         'product_data' => [
                             'name' => $service->title,
-                            'description' => $service->short_description,
+                            'description' => strip_tags($service->short_description),
                         ],
                         'unit_amount' => $service->price * 100,
                     ],
@@ -41,10 +42,10 @@ class StripeController extends Controller
             'mode' => 'payment',
             'billing_address_collection' => 'required',
             'customer_email' => Auth::user()->email,
-            'success_url' => "http://emajine.test/success?session_id={CHECKOUT_SESSION_ID}&service_id={$serviceId}",
+            'success_url' => url("/success?session_id={CHECKOUT_SESSION_ID}&service_id={$serviceId}"),
             'cancel_url' => route('services'),
         ]);
-        
+
         return redirect()->away($session->url);
     }
 
@@ -55,21 +56,38 @@ class StripeController extends Controller
         $serviceId = $request->query('service_id');
         $service = Service::find($serviceId);
         $sessionId = $request->query('session_id');
-        
+        $validator = Validator::make($request->all(), [
+            'payment_intent' => 'unique:orders,payment_intent',
+            'stripe_session_id' => 'unique:orders,stripe_session_id',
+        ]);
+
+        // Check if validation fails
+        if ($validator->fails()) {
+            abort(404);
+        }
         if ($service) {
             $session = \Stripe\Checkout\Session::retrieve($sessionId, []);
             if ($session->payment_status === 'paid') {
-                $order = new Order([
-                    'user_id' => Auth::user()->id,
-                    'service_id' => $service->id,
-                    'amount' => $service->price,
-                    'stripe_session_id' => $sessionId,
-                    'payment_intent' => $session->payment_intent
-                ]);
+                $existingOrder = Order::where('payment_intent', $session->payment_intent)
+                    ->orWhere('stripe_session_id', $sessionId)
+                    ->first();
+
+                if (!$existingOrder) {
+                    $order = new Order([
+                        'user_id' => Auth::user()->id,
+                        'service_id' => $service->id,
+                        'amount' => $service->price,
+                        'stripe_session_id' => $sessionId,
+                        'payment_intent' => $session->payment_intent
+                    ]);
+
+                    $order->save();
+                    return Inertia::render('PaymentSuccess');
+                } else {
+                    return redirect('/');
+                }
             }
-            $order->save();
         }
-        return redirect()->route('payment_success', ['order' => $order]);
     }
     public function paymentSuccess()
     {

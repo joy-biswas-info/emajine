@@ -19,7 +19,7 @@ export default function Dashboard({ auth }) {
     return (
         <AuthenticatedLayout user={auth.user}>
             <Head title="Dashboard" />
-            <div className="container mx-auto">
+            <div className="container mx-auto min-h-screen" >
                 <div className="w-48 mx-auto mt-10 ">
                     <img
                         src={`storage/${auth.user.profile_picture}`}
@@ -41,7 +41,6 @@ export default function Dashboard({ auth }) {
                         </button>
                     </div>
                 </div>
-
                 <Invoices />
                 <Orders />
             </div>

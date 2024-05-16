@@ -4,10 +4,10 @@ export default function AdminLayout({ admin, header, children,err,success }) {
 
     return (
         <div className="min-h-screen bg-gray-100 grid grid-cols-12">
-            <div className="col-span-4 h-screen fixed w-48">
+            <div className="col-span-2 h-screen fixed w-48">
                 <AdminSidebar />
             </div>
-            <main className="col-span-10 container mx-auto p-12 ml-48">
+            <main className="col-span-10 mx-auto p-12 ml-48 w-full">
                 {success && (
                     <div role="alert" className="alert alert-success">
                         <svg

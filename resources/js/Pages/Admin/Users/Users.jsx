@@ -21,7 +21,6 @@ const Users = ({ auth }) => {
             'recepeant': recepeant,
         })
             .then(res => {
-                console.log(res.data.conversation);
                 router.visit(`/admin/conversation/${res.data.conversation.id}`);
             })
     }

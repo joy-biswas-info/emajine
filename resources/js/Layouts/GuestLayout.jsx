@@ -2,15 +2,16 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { useState } from 'react';
+import Footer from './Footer';
 
 export default function Guest({ children }) {
         const [showingNavigationDropdown, setShowingNavigationDropdown] =
             useState(false);
     return (
         <>
-            <header className=" px-4 md:px-12 flex justify-between items-center bg-gray-500">
+            <header className=" px-4 md:px-12 flex justify-between items-center bg-black">
                 <ApplicationLogo className="w-48 fill-current text-gray-500 p-2" />
-                <div className='hidden md:block space-x-8'>
+                <div className="hidden md:block space-x-8">
                     <NavLink href="/services">Services</NavLink>
                     <NavLink href="/register"> Register</NavLink>
                     <NavLink href="/login">login</NavLink>
@@ -73,7 +74,8 @@ export default function Guest({ children }) {
                     <ResponsiveNavLink href="/login">login</ResponsiveNavLink>
                 </div>
             </div>
-            <main className='mx-4'>{children}</main>
+            <main className="bg-black">{children}</main>
+            <Footer />
         </>
     );
 }

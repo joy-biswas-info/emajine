@@ -46,7 +46,8 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
 
     // Orders
-    Route::get('/orders', [OrderController::class, 'orderAdmin'])->name('orders');
+    Route::get('/orders', [OrderController::class, 'showOrders'])->name('orders');
+    Route::get('/all-orders', [OrderController::class, 'orderAdmin'])->name('all.orders');
 
     // ====================
     // End Admin

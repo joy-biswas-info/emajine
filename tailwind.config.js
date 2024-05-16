@@ -1,3 +1,4 @@
+import PrimaryButton from '@/Components/PrimaryButton';
 import forms from '@tailwindcss/forms';
 import defaultTheme from 'tailwindcss/defaultTheme';
 
@@ -15,6 +16,7 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+
         },
     },
 

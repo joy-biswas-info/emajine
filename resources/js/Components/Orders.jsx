@@ -13,21 +13,21 @@ const Orders = () => {
 
 
     return (
-        <div className="max-w-lg mx-auto" >
+        <div className="mx-auto">
             {isLoading ? (
                 "Loading"
             ) : isError ? (
                 "Something went wrong"
             ) : (
-                <>            <h2 className="text-2xl font-bold mt-4 ">Orders</h2>
-
+                <>
+                    {" "}
+                    <h2 className="text-2xl font-bold my-4 ">Orders</h2>
                     <table className="mt-5 w-full">
                         <thead>
                             <tr className="bg-gray-200">
                                 <th className="py-2 px-4">No</th>
                                 <th className="py-2 px-4">Title</th>
                                 <th className="py-2 px-4">Status</th>
-                                <th className="py-2 px-4">Action</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,17 +40,15 @@ const Orders = () => {
                                             : "bg-white text-center"
                                     }
                                 >
-                                    <td className="py-2 px-4">{index + 1}</td>
-                                    <td className="py-2 px-4">
+                                    <td className="py-4 px-4 w-12">{index + 1}</td>
+                                    <td className=" px-4">
                                         {order.service.title}
                                     </td>
-                                    <td className="py-2 px-4">
-                                        {order.status}
+                                    <td className="py-2 px-4 w-48">
+                                        <p className="bg-green-300 rounded-lg" >
+                                            {order.status}
+                                        </p>
                                     </td>
-
-                                    <button className="btn btn-primary">
-                                        Review
-                                    </button>
                                 </tr>
                             ))}
                         </tbody>

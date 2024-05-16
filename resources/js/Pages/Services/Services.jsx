@@ -20,8 +20,8 @@ const Services = ({ auth }) => {
             <Head title="Services" />
             {auth?.user ? (
                 <Authenticated user={auth.user}>
-                    <div className="">
-                        <h2 className="mt-8 text-2xl font-bold text-gray-700">
+                    <div className="container mx-auto min-h-screen">
+                        <h2 className="mt-8 text-4xl font-bold text-gray-700">
                             Our Services
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">

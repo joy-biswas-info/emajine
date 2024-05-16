@@ -21,10 +21,24 @@ class OrderController extends Controller
             return response()->json('An error occured:' . $th->getMessage());
         }
     }
+
+    public function showOrders()
+    {
+        return Inertia('Admin/Orders/Orders');
+    }
     public function orderAdmin()
     {
-        $data = Order::get();
-        return response()->json($data, 200);
+        try {
+            $userRole = Auth::user()->role;
+            if (!$userRole === "Admin") {
+                abort(403);
+            }
+            $data = Order::with('service')->get();
+            return response()->json($data, 200);
+        } catch (\Throwable $th) {
+            return response()->json('An error occured:' . $th->getMessage());
+        }
+
     }
 
     public function updateOrder()
