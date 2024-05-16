@@ -3,11 +3,13 @@ import { Head, Link } from "@inertiajs/react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
-const Invoice = ({ auth, users }) => {
+const AnonimusInvoice = (auth) => {
     const [success, setSuccess] = useState(null);
     const [error, setError] = useState(null);
+
     const [formData, setFormData] = useState({
-        user_id: "",
+        user_email: "",
+        name: "",
         price: "",
         service: "",
         currency: "cad",
@@ -21,10 +23,10 @@ const Invoice = ({ auth, users }) => {
     };
     const mutation = useMutation({
         mutationFn: (formData) => {
-            return axios.post("/admin/create-invoice", formData);
+            return axios.post("/admin/admin/create-invoice-anonimus", formData);
         },
         onSuccess: (res) => {
-            setSuccess(res);
+            setSuccess(res)
         },
         onError: (error) => {
             setError(error);
@@ -40,7 +42,7 @@ const Invoice = ({ auth, users }) => {
             <Head title="Send Invoice" />
             <div className="max-w-5xl  bg-white p-8 mt-10 rounded">
                 <h2 className="text-3xl mb-4 text-black font-bold">
-                    Send Invoice to Customer
+                    Anonimus invoice to customer
                 </h2>
                 <form onSubmit={handleSubmit}>
                     <div>
@@ -48,7 +50,7 @@ const Invoice = ({ auth, users }) => {
                         <input
                             type="text"
                             name="service"
-                            placeholder="service"
+                            placeholder="Service name"
                             value={formData.service}
                             onChange={handleChange}
                             className="w-full"
@@ -63,7 +65,7 @@ const Invoice = ({ auth, users }) => {
                             <input
                                 type="number"
                                 name="price"
-                                placeholder="amount"
+                                placeholder="Amount"
                                 value={formData.price}
                                 onChange={handleChange}
                                 className="w-full"
@@ -88,23 +90,28 @@ const Invoice = ({ auth, users }) => {
                     </div>
 
                     <div>
-                        <p className="text-black mt-4">
-                            Please Select a user to send invoice
-                        </p>{" "}
-                        <select
-                            name="user_id"
+                        <p className="text-black mt-4">Name</p>{" "}
+                        <input
+                            type="text"
+                            name="name"
                             id=""
                             onChange={handleChange}
-                            value={formData.user_id}
+                            value={formData.name}
                             className="w-full"
-                        >
-                            <option value="">Please Select a user</option>
-                            {users.map((u) => (
-                                <option key={u.id} value={u.id}>
-                                    {u.name}
-                                </option>
-                            ))}
-                        </select>
+                            placeholder="Customer name"
+                        />
+                    </div>
+                    <div>
+                        <p className="text-black mt-4">Input Email</p>{" "}
+                        <input
+                            type="email"
+                            name="user_email"
+                            id=""
+                            onChange={handleChange}
+                            value={formData.user_email}
+                            className="w-full"
+                            placeholder="Customer email here"
+                        />
                     </div>
 
                     <input
@@ -114,14 +121,14 @@ const Invoice = ({ auth, users }) => {
                     />
                 </form>
                 <Link
-                    href="/admin/anonimus/invoice"
+                    href="/admin/invoice"
                     className="btn w-full mt-12 btn-warning"
                 >
-                    Not on portal
+                    On portal
                 </Link>
             </div>
         </AdminLayout>
     );
 };
 
-export default Invoice;
+export default AnonimusInvoice;

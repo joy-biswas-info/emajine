@@ -57,17 +57,15 @@ const Messages = ({ auth }) => {
         mutation.mutate(formData);
         e.target[0].value = "";
     };
-
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
     }, [data]);
-
 
     return (
         <Authenticated user={auth.user}>
             <Head title="Message" />
             <div className="container mx-auto flex flex-col md:flex-row gap-12 px-12 md:px-48 mt-12">
-                <div className="messagesContainer w-[460px} h-[100vh] md:w-[520px] flex flex-col justify-between content-between ">
+                <div className="messagesContainer w-[460px} h-[90vh] md:w-[520px] flex flex-col justify-between content-between ">
                     <div className="flex gap-2 border-b-2 items-center">
                         <img
                             src="/logo.png"

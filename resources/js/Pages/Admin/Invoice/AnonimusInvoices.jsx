@@ -1,33 +1,33 @@
 import AdminLayout from "@/Layouts/AdminLayout";
 import { Head } from "@inertiajs/react";
 import { QueryClient, useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { FaTrash } from "react-icons/fa";
 
-const Invoices = (auth) => {
-    const [success,setSuccess] = useState(null)
+const AnonimusInvoices = (auth) => {
     const { isLoading, isError, data } = useQuery({
-        queryKey: ["admin-invoices"],
+        queryKey: ["admin/invoices"],
         queryFn: () =>
-            axios.get("/admin/get-invoices").then((res) => {
+            axios.get("/admin/all-anonimus-invoice").then((res) => {
                 return res.data;
             }),
     });
 
-        const mutation = useMutation({
-            mutationFn: (id) => {
-                return axios.delete(`/admin/delete/anonimus-invoice/${id}`);
-            },
-            onSuccess: (res) => {QueryClient.invalidateQueries(["admin-invoices"]);setSuccess(res.data)},
-        });
+    const mutation = useMutation({
+        mutationFn: (id) => {
+            return axios.delete(`/admin/delete/anonimus-invoice/${id}`);
+        },
+        onSuccess: () => QueryClient.invalidateQueries(["admin/invoices"])
+        ,
+    });
 
-        const handleDelete = (id) => {
-            mutation.mutate(id);
-        };
+    const handleDelete = (id) => {
+        mutation.mutate(id);
+    };
+
 
     return (
-        <AdminLayout admin={auth.user} success={success}>
-            <Head title="Invoices" />
+        <AdminLayout admin={auth.user}>
+            <Head title="Invoices"/>
             <div className=" mx-auto">
                 {isLoading ? (
                     "Loading" ? (
@@ -43,7 +43,6 @@ const Invoices = (auth) => {
                                 <thead>
                                     <tr className="bg-gray-200">
                                         <th className="py-2 px-4">No</th>
-                                        <th className="py-2 px-4">Name</th>
                                         <th className="py-2 px-4">
                                             Amount Due
                                         </th>
@@ -64,9 +63,7 @@ const Invoices = (auth) => {
                                             <td className="py-2 px-4">
                                                 {index + 1}
                                             </td>
-                                            <td className="py-2 px-4">
-                                                {invoice?.customer?.name}
-                                            </td>
+
                                             <td className="py-2 px-4">
                                                 {invoice.amount_due / 100}
                                             </td>
@@ -74,7 +71,14 @@ const Invoices = (auth) => {
                                                 {invoice.status}
                                             </td>
                                             <td className="py-2 px-4">
-                                                <button className="btn bg-red-500 text-white" onClick={()=>handleDelete(invoice.id)}>
+                                                <button
+                                                    className="btn bg-red-500 text-white"
+                                                    onClick={() =>
+                                                        handleDelete(
+                                                            invoice.id
+                                                        )
+                                                    }
+                                                >
                                                     Delete{" "}
                                                     <FaTrash className="text-white" />{" "}
                                                 </button>
@@ -91,4 +95,4 @@ const Invoices = (auth) => {
     );
 };
 
-export default Invoices;
+export default AnonimusInvoices;

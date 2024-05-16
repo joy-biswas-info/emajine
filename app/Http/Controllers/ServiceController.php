@@ -35,13 +35,14 @@ class ServiceController extends Controller
     //! Store services 
     public function store(Request $request)
     {
+        // dd($request->thumb);
 
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'short_description' => 'nullable|max:255',
             'description' => 'required',
             'price' => 'required|numeric',
-            'thumb' => 'required|image|mimes:jpeg,png,jpg,gif'
+            'thumb' => 'required|image'
         ]);
 
         $timestamp = now()->timestamp;

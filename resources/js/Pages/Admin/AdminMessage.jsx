@@ -87,7 +87,7 @@ const AdminMessage = ({ auth, param }) => {
                                       >
                                           <div className="imgContainer flex gap-2">
                                               <img
-                                                  src={`/storage/${c.sender.profile_picture}`}
+                                                  src={`/storage/${c?.sender?.profile_picture}`}
                                                   alt=""
                                                   className="w-6 h-6 rounded-full"
                                               />
@@ -115,12 +115,12 @@ const AdminMessage = ({ auth, param }) => {
                                 <div className="border-b pb-2 ">
                                     <div className="imgContainer flex gap-2 items-center">
                                         <img
-                                            src={`/storage/${conversationData[0].sender.profile_picture}`}
+                                            src={`/storage/${conversationData[0]?.sender?.profile_picture}`}
                                             alt=""
                                             className="w-8 h-8 rounded-full object-contain border-2"
                                         />
                                         <h2 className=" font-semibold">
-                                            {conversationData[0].sender.name}
+                                            {conversationData[0]?.sender?.name}
                                         </h2>
                                     </div>
                                 </div>
@@ -154,8 +154,8 @@ const AdminMessage = ({ auth, param }) => {
                                                                         m.from_id
                                                                     ) ===
                                                                     auth.user.id
-                                                                        ? `/storage/${auth.user.profile_picture}`
-                                                                        : `/storage/${m.from_user.profile_picture}`
+                                                                        ? `/storage/${auth.user?.profile_picture}`
+                                                                        : `/storage/${m.from_user?.profile_picture}`
                                                                 }
                                                                 alt=""
                                                             />

@@ -65,7 +65,7 @@ const CreateService = ({auth}) => {
           formDataToSend.append(key, formData[key]);
         }
         try {
-          const response = await axios.post('/admin/add-services', formDataToSend);
+          const response = await axios.post('/admin/add-services',formDataToSend);
           setFormData({
               title: "",
               short_description: "",

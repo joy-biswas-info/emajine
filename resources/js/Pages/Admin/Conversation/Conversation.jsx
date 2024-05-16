@@ -42,12 +42,12 @@ const Conversation = ({ auth }) => {
                                       >
                                           <div className="imgContainer flex gap-2">
                                               <img
-                                                  src={`/storage/${c.sender.profile_picture}`}
+                                                  src={`/storage/${c.sender?.profile_picture}`}
                                                   alt=""
                                                   className="w-6 h-6 rounded-full"
                                               />
                                               <h2 className={"font-bold"}>
-                                                  {c.recipient.name}
+                                                  {c.recipient?.name}
                                               </h2>
                                           </div>
                                           <p

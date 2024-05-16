@@ -18,6 +18,11 @@ class InvoiceController extends Controller
         $users = User::get();
         return Inertia('Admin/Invoice/Invoice', ['users' => $users]);
     }
+    public function anonimusInvoice()
+    {
+        $users = User::get();
+        return Inertia('Admin/Invoice/AnonimusInvoice');
+    }
     public function store(Request $request)
     {
 
@@ -117,6 +122,7 @@ class InvoiceController extends Controller
         foreach ($data as $item) {
             $invoice = StripeInvoice::retrieve($item->invoice_id);
             $invoicesData[] = [
+                'id' => $item->id,
                 'invoice_id' => $invoice->id,
                 'amount_due' => $invoice->amount_due,
                 'amount_paid' => $invoice->amount_paid,
@@ -128,4 +134,10 @@ class InvoiceController extends Controller
         ;
         return response()->json($invoicesData, 200);
     }
+    public function destroy(Invoice $invoice)
+    {
+        $invoice->delete();
+        return response()->json('Invoice deleted successfully', 200);
+    }
+
 }

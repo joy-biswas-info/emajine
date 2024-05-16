@@ -1,5 +1,6 @@
 <?php
 use App\Http\Controllers\AdminMessageController;
+use App\Http\Controllers\AnonimusInvoiceController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\OrderController;
@@ -32,10 +33,16 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'admin'])->group(fun
 
 
     // invoices 
+    Route::get("/anonimus/invoice", [InvoiceController::class, 'AnonimusInvoice'])->name('AnonimusInvoice');
+    Route::post("/admin/create-invoice-anonimus", [AnonimusInvoiceController::class, 'store']);
+    Route::get('/all-anonimus-invoice', [AnonimusInvoiceController::class, 'index']);
+    Route::get('/anonimus/invoices', [AnonimusInvoiceController::class, 'showAll'])->name('anonimus.invoices');
     Route::get("/invoice", [InvoiceController::class, 'show'])->name('invoices');
     Route::post("/create-invoice", [InvoiceController::class, 'store']);
     Route::get("/invoices", [InvoiceController::class, 'showAllInvoice'])->name('all.invoices');
     Route::get("/get-invoices", [InvoiceController::class, 'allInvoice'])->name('get.invoices');
+    Route::delete('/delete/anonimus-invoice/{invoice}', [AnonimusInvoiceController::class, 'destroy']);
+    Route::delete('/delete/anonimus-invoice/{invoice}', [InvoiceController::class, 'destroy']);
 
 
     // Orders

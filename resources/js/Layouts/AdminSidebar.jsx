@@ -1,4 +1,5 @@
-import AdminNavLink from '@/Components/AdminNavLink';
+import AdminNavLink from "@/Components/AdminNavLink";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const AdminSidebar = () => {
     return (
@@ -6,8 +7,8 @@ const AdminSidebar = () => {
             <ul className="menu menu-horizontal">
                 <li>
                     <AdminNavLink
-                        href={route("dashboard")}
-                        active={route().current("dashboard")}
+                        href="/admin/dashboard"
+                        active={route().current("admin.dashboard")}
                         className="my-2"
                     >
                         Dashboard
@@ -79,8 +80,28 @@ const AdminSidebar = () => {
                                     All Invoices
                                 </AdminNavLink>
                             </li>
+                            <li>
+                                <AdminNavLink
+                                    href={route("admin.anonimus.invoices")}
+                                    active={route().current(
+                                        "admin.anonimus.invoices"
+                                    )}
+                                    className="my-2"
+                                >
+                                    Invoices (A)
+                                </AdminNavLink>
+                            </li>
                         </div>
                     </details>
+                </li>
+                <li>
+                    <AdminNavLink
+                        method="post"
+                        href={route("logout")}
+                        as="button"
+                    >
+                        Log Out <FaSignOutAlt />
+                    </AdminNavLink>
                 </li>
             </ul>
         </div>
