@@ -38,6 +38,7 @@ jobs:
             php composer.phar install --no-interaction --prefer-dist --optimize-autoloader
             # php artisan migrate:fresh
             # php artisan storage:link
+            php artisan migrate
             php artisan config:clear
             php artisan optimize:clear
             php artisan up
