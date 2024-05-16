@@ -6,7 +6,7 @@ import { useState } from 'react';
 
 const CreateService = ({ auth }) => {
       const [description, setDescription] = useState("");
-      const [ShortDescription, setShortDescription] = useState("");
+      const [shortDescription, setShortDescription] = useState("");
 
     const [success, setSuccess] = useState(null);
     const [errors, setErrors] = useState({
@@ -70,6 +70,7 @@ const CreateService = ({ auth }) => {
             formDataToSend.append(key, formData[key]);
         }
             formDataToSend.append("description", description);
+            formDataToSend.append("short_description", shortDescription);
         try {
             const response = await axios.post(
                 "/admin/add-services",
@@ -121,7 +122,7 @@ const CreateService = ({ auth }) => {
                 <label className="block mb-4">
                     <span className="text-gray-700">Short Description</span>
                     <ServiceShortDescriptionEditor
-                        shortDescription={ShortDescription}
+                        shortDescription={shortDescription}
                         setShortDescription={setShortDescription}
                     />
                     {errors?.short_description && (
