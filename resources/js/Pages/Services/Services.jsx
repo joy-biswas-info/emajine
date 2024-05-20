@@ -21,7 +21,7 @@ const Services = ({ auth }) => {
             {auth?.user ? (
                 <Authenticated user={auth.user}>
                     <div className="container mx-auto min-h-screen">
-                        <h2 className="mt-8 text-4xl font-bold text-gray-700">
+                        <h2 className="mt-8 text-4xl font-bold text-white">
                             Our Services
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">
@@ -41,8 +41,8 @@ const Services = ({ auth }) => {
                 </Authenticated>
             ) : (
                 <Guest>
-                    <div className="container mx-auto">
-                        <h2 className="mt-8 text-2xl font-bold">
+                    <div className="container mx-auto py-12">
+                        <h2 className="text-4xl font-bold text-white">
                             Our Services
                         </h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-8">

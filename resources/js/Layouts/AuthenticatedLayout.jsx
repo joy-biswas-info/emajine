@@ -61,7 +61,7 @@ export default function Authenticated({ user, header, children }) {
     };
 
     return (
-        <div className="min-h-screen bg-gray-100">
+        <div className="min-h-screen bg-black">
             <nav className="bg-black border-b border-gray-200 py-2">
                 <div className="max-w-8xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between h-16">

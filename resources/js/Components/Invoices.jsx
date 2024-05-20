@@ -18,13 +18,13 @@ const Invoices = () => {
                 )
             ) : (
                 <>
-                    <h2 className="my-5 text-2xl font-bold ">Invoice to pay</h2>
+                    <h2 className="my-5 text-2xl font-bold text-white">Invoice to pay</h2>
                     {
                         <table className="w-full">
                             <thead>
-                                <tr className="bg-gray-200">
+                                <tr className="bg-gray-500 text-white">
                                     <th className="py-2 px-4 w-12">No</th>
-                                    <th className="py-2 px-4">Amount</th>
+                                    <th className="py-2 px-4">Due amount</th>
                                     <th className="py-2 px-4 w-48">Action</th>
                                 </tr>
                             </thead>
@@ -34,7 +34,7 @@ const Invoices = () => {
                                         key={invoice.invoice_id}
                                         className={
                                             index % 2 === 0
-                                                ? "bg-gray-100 text-center"
+                                                ? "bg-gray-300 text-center"
                                                 : "bg-white text-center"
                                         }
                                     >

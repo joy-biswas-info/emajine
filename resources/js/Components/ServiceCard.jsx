@@ -1,22 +1,19 @@
 import { Link } from "@inertiajs/react";
 
 const ServiceCard = ({ service }) => {
-
     return (
-        <div className=" mx-auto  shadow-lg">
-                            <Link href={`/single/${service.id}`}>
-
-            <img
-                className="max-w-full object-contain"
-                src={`/storage/${service.thumb}`}
-                alt="Service Thumbnail"
-            />
+        <div className=" mx-auto  shadow-sm text-white shadow-gray-500 pb-2">
+            <Link href={`/single/${service.id}`}>
+                <img
+                    className="max-w-full object-contain"
+                    src={`/storage/${service.thumb}`}
+                    alt="Service Thumbnail"
+                />
             </Link>
             <div className="px-6 py-4">
-                <Link href={`/single/${service.id}`}>
-                    <div className="font-bold text-xl mb-2">
+                <Link href={`/single/${service.id}`} className="text-xl font-bold text-orange-500">
                         {service.title}
-                    </div>
+                    
                 </Link>
                 <div
                     dangerouslySetInnerHTML={{
@@ -34,14 +31,14 @@ const ServiceCard = ({ service }) => {
                     <button
                         type="submit"
                         id="checkout-live-button"
-                        className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                        className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-orange-500 text-white"
                     >
                         Buy Now
                     </button>
                 </form>
                 <Link
                     href={`/single/${service.id}`}
-                    className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-black text-white"
+                    className="inline-block rounded-full px-3 py-1 text-sm font-semibold mr-2 cursor-pointer bg-orange-500 text-white"
                 >
                     View Details
                 </Link>

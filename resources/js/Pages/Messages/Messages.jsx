@@ -59,14 +59,14 @@ const Messages = ({ auth }) => {
     };
     useEffect(() => {
         scrollRef.current?.scrollIntoView({ behaviour: "smooth" });
-    }, [data]);
+    }, [data, conversationData]);
 
     return (
         <Authenticated user={auth.user}>
             <Head title="Message" />
-            <div className="container mx-auto flex flex-col md:flex-row gap-12 px-12 md:px-48 mt-12">
+            <div className="container mx-auto flex flex-col md:flex-row gap-12 px-12 md:px-48 mt-12 ">
                 <div className="messagesContainer w-[460px} h-[90vh] md:w-[520px] flex flex-col justify-between content-between ">
-                    <div className="flex gap-2 border-b-2 items-center">
+                    <div className="flex gap-2 border-b-2 items-center text-white my-2 py-2">
                         <img
                             src="/logo.png"
                             alt=""
@@ -75,7 +75,7 @@ const Messages = ({ auth }) => {
                         <p>Emajine </p>
                     </div>
                     {isLoading ? (
-                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll">
+                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll bg-white">
                             loading
                         </div> ? (
                             isError
@@ -83,7 +83,7 @@ const Messages = ({ auth }) => {
                             "Something went wrong..."
                         )
                     ) : (
-                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll">
+                        <div className="messageContainer w-[460px} md:w-[520px] overflow-y-scroll bg-white h-full">
                             {data?.data
                                 .sort(
                                     (a, b) =>
@@ -103,7 +103,7 @@ const Messages = ({ auth }) => {
                                             key={m.id}
                                         >
                                             <div className="chat-image avatar">
-                                                <div className="w-10 rounded-full">
+                                                <div className="w-10 rounded-full object-contain">
                                                     <img
                                                         src={
                                                             parseFloat(
@@ -215,7 +215,7 @@ const Messages = ({ auth }) => {
                     <div>
                         <form
                             onSubmit={handleSubmit}
-                            className="flex flex-col gap-y-2"
+                            className="flex flex-col gap-y-2 text-white my-12"
                         >
                             <div className="flex">
                                 <textarea

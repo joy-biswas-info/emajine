@@ -21,10 +21,10 @@ const Orders = () => {
             ) : (
                 <>
                     {" "}
-                    <h2 className="text-2xl font-bold my-4 ">Orders</h2>
+                    <h2 className="text-2xl font-bold my-4 text-white">Orders</h2>
                     <table className="mt-5 w-full">
                         <thead>
-                            <tr className="bg-gray-200">
+                            <tr className="bg-gray-500 text-white">
                                 <th className="py-2 px-4">No</th>
                                 <th className="py-2 px-4">Title</th>
                                 <th className="py-2 px-4">Status</th>
@@ -36,7 +36,7 @@ const Orders = () => {
                                     key={order.id}
                                     className={
                                         index % 2 === 0
-                                            ? "bg-gray-100 text-center"
+                                            ? "bg-gray-300 text-center"
                                             : "bg-white text-center"
                                     }
                                 >
